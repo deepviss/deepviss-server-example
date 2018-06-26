@@ -1,0 +1,588 @@
+{
+  "swagger":"2.0",
+  
+  "info":{
+    "description":"DeepVISS (Deep Vision Interoperability Specification Standard) allows several computer vision solutions to produce, consume and exchange events in the same format.",
+    "version":"1.0.0",
+    "title":"DeepVISS",
+    "termsOfService":"https://deepviss.org",
+    "contact":{
+      "email":"office@deepviss.org"
+    },
+    "license":{
+      "name":"Apache 2.0",
+      "url":"https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host":"deepviss.org",
+  "basePath":"/v2",
+  "tags":[
+    {
+      "name":"frame",
+      "description":"Information about post-processed frames",
+      "externalDocs":{
+        "description":"Find out more",
+        "url":"https://deepviss.org"
+      }
+    },
+    {
+      "name":"event",
+      "description":"Definition of a detection event"
+    },
+    {
+      "name":"source",
+      "description":"Source of original photo or video stream content",
+      "externalDocs":{
+        "description":"Find out more about our store",
+        "url":"http://swagger.io"
+      }
+    }
+  ],
+  "schemes":[
+    "https"
+  ],
+  "paths":{
+    "/stream/frames":{
+      "get":{
+        "tags":[
+          "frame",
+          "event",
+          "timetstamp"
+        ],
+        "summary":"Retrieve last frames",
+        "description":"Multiple status values can be provided with comma separated strings",
+        "operationId":"getLastFrames",
+        "produces":[
+          "application/xml",
+          "application/json"
+        ],
+        "parameters":[
+          {
+            "name":"sourceId",
+            "in":"query",
+            "description":"Id of the source.",
+            "required":true,
+            "type":"string"
+          }, {
+            "name":"eventType",
+            "in":"query",
+            "description":"Type of the event.",
+            "required":false,
+            "type":"string"
+          }, {
+            "name":"startTime",
+            "in":"query",
+            "description":"Start time.",
+            "required":false,
+            "type":"string"
+          }, {
+            "name":"endTime",
+            "in":"query",
+            "description":"End time",
+            "required":false,
+            "type":"string"
+          }
+        ],
+        "responses":{
+          "200":{
+            "description":"successful operation",
+            "schema":{
+              "type":"array",
+              "items":{
+                "$ref":"#/definitions/Frame"
+              }
+            }
+          },
+          "400":{
+            "description":"Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "definitions":{
+    "Frame": {
+      "type": "object",
+      "properties": {
+        "timestamps": {
+          "type": "object",
+          "description": "Timestamps of the frame.",
+          "required":[
+            "reception"
+          ],
+          "additionalProperties": {
+            "type": "string",
+            "pattern":"/^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/g"
+          },
+          "xml": {
+            "name": "timestamps",
+            "wrapped": true
+          }
+        },
+        "sourceId": {
+          "type": "string",
+          "description": "Video source id."
+        },
+        "pictureUrl": {
+          "type": "string",
+          "description": "Url of the picture."
+        },
+        "pictureBase64": {
+          "type": "string",
+          "format":"byte",
+          "description": "Base64 encoded string of the picture."
+        },
+        "pictureContentType":
+        {
+          "type": "string",
+          "description": "Picture MIME-type, such ",
+          "examples":["image/png", "image/jpeg"]
+        },
+        "events": {
+          "type": "array",
+          "xml": {
+            "name": "events",
+            "wrapped": true
+          },
+          "items": {
+            "$ref": "#/definitions/Event",
+            "type": "Event"
+          }
+        }
+      }
+    },
+    "FrameTimestamp":{
+      "type":"object",
+      "properties":{
+        "value":{
+          "type":"string",
+          "pattern":"/^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/g",
+          "description":"Date and time expressed according to ISO 8601 (e.g. 2018-06-24T23:10:28+03:00)"
+        },
+        "reference":{
+          "type":"string",
+          "enum":[
+            "acquisition",
+            "reception",
+            "preprocessing",
+            "postprocessing"
+          ]
+        }
+      },
+      "xml":{
+        "name":"FrameTimestamp"
+      }
+    },
+    "Event":{
+      "type":"object",
+      "properties":{
+        "objectType":{
+          "type":"string",
+          "description":"What type of event has been detected?",
+          "example":[
+            "face",
+            "car",
+            "license-plate",
+            "pedestrian",
+            "anomaly"
+          ]
+        },
+        "id":{
+          "type":"string",
+          "description":"Unique or almost-unique hash or identifier of the detected event. Can be computed as dependant on frame timestamp, position of detection and event type.",
+          "example":[
+            "w7vp5YXWn4",
+            "T2NLg96Xosg7NLg96Xos",
+            "ncBPjMAcDb"
+          ]
+        },
+        "orientation":{
+          "type":"EventOrientation",
+          "$ref":"#/definitions/EventOrientation",
+          "description":"What is the geometric orientation of the detected object or event?"
+        },
+        "attributes":{
+          "description":"What are the inferred attributes of the object?",
+          "type":"array",
+          "xml":{
+            "name":"events",
+            "wrapped":true
+          },
+          "items":{
+            "$ref":"#/definitions/EventAttribute",
+            "type":"EventAttribute"
+          }
+        },
+        "detection":{
+          "type":"EventDetection",
+          "$ref":"#/definitions/EventDetection",
+          "description":"Detection information"
+        },
+        "features":{
+          "type":"EventFeatures",
+          "$ref":"#/definitions/EventFeatures",
+          "description":"What are the coordinates of the key points (landmarks, mask outline) of the object?"
+        }
+      },
+      "xml":{
+        "name":"Event"
+      }
+    },
+    "EventDetection":{
+      "type":"object",
+      "properties":{
+        "boundingRectangle":{
+          "type":"EventBoundingRectangle",
+          "$ref":"#/definitions/EventBoundingRectangle",
+          "description":"Where in the frame has the object been detected?"
+        },
+        "algorithm":{
+          "type":"string",
+          "description":"What type of algorithm performed the detection",
+          "example":[
+            "faster-rcnn",
+            "yolo",
+            "hog-svm"
+          ]
+        },
+        "keyPoints":{
+          "type":"object",
+          "additionalProperties":{
+            "type":"array",
+            "items":{
+              "$ref":"#/definitions/Point2D"
+            }
+          }
+        },
+        "confidence":{
+          "type":"number",
+          "format":"double",
+          "description":"What is the confidence of the detection",
+          "example":[
+            0.931,
+            0.874,
+            0.973
+          ]
+        }
+      },
+      "xml":{
+        "name":"EventDetection"
+      }
+    },
+    "EventBoundingRectangle":{
+      "type":"object",
+      "required":[
+        "top",
+        "left",
+        "width",
+        "height"
+      ],
+      "properties":{
+        "top":{
+          "description":"Top-most position, in pixels, of of the bounding rectangle",
+          "type":"integer",
+          "format":"int32",
+          "example":32
+        },
+        "left":{
+          "description":"Left-most position, in pixels, of of the bounding rectangle",
+          "type":"integer",
+          "format":"int32",
+          "example":57
+        },
+        "width":{
+          "description":"Width, in pixels, of the bounding rectangle",
+          "type":"integer",
+          "format":"int32",
+          "example":237
+        },
+        "height":{
+          "description":"Height, in pixels, of the bounding rectangle",
+          "type":"integer",
+          "format":"int32",
+          "example":352
+        }
+      },
+      "xml":{
+        "name":"EventBoundingRectangle"
+      }
+    },
+    "Point2D":{
+      "type":"object",
+      "required":[
+        "x",
+        "y"
+      ],
+      "properties":{
+        "x":{
+          "description":"X-coordinate as integer number of pixels measured from the left to the right.",
+          "type":"integer",
+          "format":"int32"
+        },
+        "y":{
+          "description":"Y-coordinate as integer number of pixels measured from the top to the bottom.",
+          "type":"integer",
+          "format":"int32"
+        }
+      },
+      "xml":{
+        "name":"Point2D"
+      }
+    },
+    "Source":{
+      "type":"object",
+      "required":[
+        "id",
+        "name"
+      ],
+      "properties":{
+        "id":{
+          "description":"Internal alphanumeric ID of video source",
+          "type":"string"
+        },
+        "name":{
+          "description":"Human-readable name of video source",
+          "type":"string"
+        },
+        "vendor":{
+          "description":"Vendor of the camera",
+          "type":"string"
+        },
+        "model":{
+          "description":"Model of the camera",
+          "type":"string"
+        },
+        "stateless":{
+          "description":"Set to true if stream is expected to have non-continous frames.",
+          "type":"boolean"
+        },
+        "fixedPosition":{
+          "description":"Set to true if camera is expected to move.",
+          "type":"boolean"
+        },
+        "Position":{
+          "description":"The geographic (physical) position of the camera",
+          "type":"GeoPosition"
+        },
+        "connection":{
+          "description":"Details on connection.",
+          "type":"SourceConnection"
+        }
+      },
+      "xml":{
+        "name":"Source"
+      }
+    },
+    "EventOrientation":{
+      "type":"object",
+      "required":[
+
+      ],
+      "properties":{
+        "yaw":{
+          "description":"The yaw of the detected object or event.",
+          "type":"number",
+          "format":"double"
+        },
+        "pitch":{
+          "description":"The pitch of the detected object or event.",
+          "type":"number",
+          "format":"double"
+        },
+        "roll":{
+          "description":"The roll of the detected object or event.",
+          "type":"number",
+          "format":"double"
+        }
+      },
+      "xml":{
+        "name":"EventOrientation"
+      }
+    },
+    "EventFeatures":{
+      "type":"object",
+      "required":[
+        "features"
+      ],
+      "properties":{
+        "algorithm":{
+          "description":"The name and version of the algorithm used for feature extraction",
+          "type":"string",
+          "example":"Euclidean tripartite loss function"
+        },
+        "metric":{
+          "description":"The recommended type of metric used ",
+          "type":"string",
+          "example":"Euclidean tripartite loss function",
+          "enum":[
+            "euclidean",
+            "manhattan",
+            "cosine"
+          ]
+        },
+        "threshold":{
+          "description":"The value of the metric threshold",
+          "type":"number",
+          "format":"double",
+          "example":[0.8, 1.0]
+        },
+        "features":{
+          "description":"N-dimensional feature vector of numerical features representing the unique signature of the object",
+          "type":"array",
+          "xml":{
+            "name":"features",
+            "wrapped":true
+          },
+          "items":{
+            "type":"number",
+            "format":"double"
+          }
+        }
+      },
+      "xml":{
+        "name":"EventFeatures"
+      }
+    },
+    "EventAttribute":{
+      "type":"object",
+      "required":[
+        "name",
+        "value"
+      ],
+      "properties":{
+        "name":{
+          "description":"The name of the attribute",
+          "type":"string",
+          "example":[
+            "age",
+            "age-group",
+            "gender",
+            "make",
+            "model",
+            "color"
+          ]
+        },
+        "value":{
+          "description":"The value of the attribute",
+          "type":"string",
+          "example":[
+            "32",
+            "32-45",
+            "male",
+            "Volkwagen",
+            "Passat",
+            "#1214ED"
+          ]
+        },
+        "confidence":{
+          "description":"The confidence of the classification",
+          "type":"number",
+          "format":"double",
+          "example":[
+            0.93,
+            0.971,
+            0.8825
+          ]
+        },
+        "type":{
+          "description":"The type of the attribute, to be used in higher order processing and logic.",
+          "type":"string",
+          "enum":[
+            "string",
+            "hex-color",
+            "integer"
+          ]
+        }
+      },
+      "xml":{
+        "name":"EventAttribute"
+      }
+    },
+    "GeoPosition":{
+      "type":"object",
+      "required":[
+        "latitude",
+        "longitude"
+      ],
+      "properties":{
+        "latitude":{
+          "description":"The latitude at which the video source is installed.",
+          "type":"number",
+          "format":"double"
+        },
+        "longitude":{
+          "description":"The longitude at which the video source is installed.",
+          "type":"number",
+          "format":"double"
+        },
+        "altitude":{
+          "description":"The altitude at which the video source is installed.",
+          "type":"number",
+          "format":"double"
+        },
+        "elevation":{
+          "description":"The elevation from the ground at which the video source is installed, measured in meters.",
+          "type":"number",
+          "format":"double"
+        }
+      },
+      "xml":{
+        "name":"GeoPosition"
+      }
+    },
+    "EventKeypointsSegment":{
+      "type":"object",
+      "additionalProperties":{
+        "type":"array",
+        "items":{
+          "$ref":"#/definitions/Point2D",
+          "type":"Point2D"
+        }
+      },
+      "xml":{
+        "name":"EventKeypointsSegment"
+      }
+    },
+    "SourceConnection":{
+      "type":"object",
+      "required":[
+        "url",
+        "protocol"
+      ],
+      "properties":{
+        "url":{
+          "description":"The hostname of the video source",
+          "type":"string"
+        },
+        "username":{
+          "description":"The username used for authentication to the video source",
+          "type":"string"
+        },
+        "password":{
+          "description":"The password used for authentication to the video source",
+          "type":"string"
+        },
+        "protocol":{
+          "type":"string",
+          "description":"The protocol used to connect to the video source",
+          "enum":[
+            "jpeg_snapshot",
+            "mjpeg",
+            "h264_http",
+            "hls",
+            "webrtc",
+            "image_push",
+            "video_push"
+          ]
+        }
+      },
+      "xml":{
+        "name":"SourceConnection"
+      }
+    }
+  },
+  "externalDocs":{
+    "description":"Find out more about DeepVISS",
+    "url":"https://deepviss.org"
+  }
+}

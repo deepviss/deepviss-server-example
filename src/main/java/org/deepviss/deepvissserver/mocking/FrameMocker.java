@@ -1,0 +1,152 @@
+package org.deepviss.deepvissserver.mocking;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
+import org.deepviss.deepvissserver.model.*;
+
+import java.io.IOException;
+import java.util.*;
+
+public class FrameMocker {
+
+    private byte[] pictureBytes;
+
+    public FrameMocker() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        pictureBytes=IOUtils.toByteArray(classLoader.getResourceAsStream("static/logo-deepviss-96x96.png"));
+
+    }
+
+    public  List<DeepVISSFrame> getMockedFrames() throws IOException {
+
+
+        Random random = new Random(733183359988335585L);
+        int maxFrameIndex = 3;
+        int minEventNumber = 2;
+        int maxEventNumber = 4;
+        String sourceId = "HikVision 17 - Entrance";
+        int maxFeatureIndex = 128;
+        String[] algorithmsDetection = new String[]{"hog", "faster-rcnn", "yolo"};
+        String[] objectTypes = new String[]{"face", "car", "pedestrain", "anomaly"};
+        String[] keypointSegmentNames = new String[]{"nose", "mouth", "leftEye", "rightEye"};
+
+
+        Map<String, Integer> keypointCountPerSegment = new HashMap<>();
+        keypointCountPerSegment.put(keypointSegmentNames[0], 4);
+        keypointCountPerSegment.put(keypointSegmentNames[1], 16);
+        keypointCountPerSegment.put(keypointSegmentNames[2], 14);
+        keypointCountPerSegment.put(keypointSegmentNames[3], 14);
+
+        List<DeepVISSFrame> frameList = new ArrayList<>();
+        for (int frameIndex = 0; frameIndex < maxFrameIndex; frameIndex++) {
+            DeepVISSFrame frame = new DeepVISSFrame();
+            frameList.add(frame);
+            DeepVISSFrameTimestamp timestamp = new DeepVISSFrameTimestamp();
+            timestamp.setReference(DeepVISSFrameTimestamp.ReferenceEnum.ACQUISITION);
+            String timestampString="2018-06-24T23:10:28+03:00";
+            timestamp.setValue("2018-06-24T23:10:28+03:00");
+            frame.setTimestamps(new HashMap<>());
+            frame.getTimestamps().put("reception", timestampString);
+            frame.setSourceId(sourceId);
+            frame.setPictureUrl("https://scontent.fotp3-2.fna.fbcdn.net/v/t1.0-9/35671578_587625364954981_8949170630209568768_n.png?_nc_cat=0&oh=82807829ab09846f4a2898d50cbb6cba&oe=5BEC7C21");
+            frame.setPictureBase64(pictureBytes);
+
+            frame.setEvents(new ArrayList<>());
+            int eventNumber = (int) Math.round(minEventNumber + random.nextDouble() * maxEventNumber);
+            for (int eventIndex = 0; eventIndex < eventNumber; eventIndex++) {
+                DeepVISSEvent event = new DeepVISSEvent();
+                DeepVISSEventDetection detection = new DeepVISSEventDetection();
+                detection.setAlgorithm(algorithmsDetection[random.nextInt(algorithmsDetection.length)]);
+
+                detection.setBoundingRectangle(new DeepVISSEventBoundingRectangle());
+                detection.getBoundingRectangle().setHeight(100 + random.nextInt(150));
+                detection.getBoundingRectangle().setWidth(100 + random.nextInt(150));
+                detection.getBoundingRectangle().setTop(100 + random.nextInt(150));
+                detection.getBoundingRectangle().setLeft(100 + random.nextInt(150));
+
+                detection.setConfidence(0.8 + random.nextDouble() * 0.2);
+
+                detection.setKeyPoints(new HashMap<>());
+                for (int segmentIndex = 0; segmentIndex < keypointSegmentNames.length; segmentIndex++) {
+                    int numberOfKeypointsPerSegment = keypointCountPerSegment.get(keypointSegmentNames[segmentIndex]);
+                    detection.getKeyPoints().put(keypointSegmentNames[segmentIndex], new ArrayList<>());
+                    for (int keypointIndex = 0; keypointIndex < numberOfKeypointsPerSegment; keypointIndex++) {
+                        DeepVISSPoint2D point2D = new DeepVISSPoint2D();
+                        point2D.setX(detection.getBoundingRectangle().getLeft() + random.nextInt(detection.getBoundingRectangle().getWidth()));
+                        point2D.setY(detection.getBoundingRectangle().getTop() + random.nextInt(detection.getBoundingRectangle().getHeight()));
+
+                        detection.getKeyPoints().get(keypointSegmentNames[segmentIndex]).add(point2D);
+                    }
+                }
+
+                event.setDetection(detection);
+
+                frame.getEvents().add(event);
+                event.setAttributes(new ArrayList<>());
+                DeepVISSEventAttribute attribute;
+
+                attribute = new DeepVISSEventAttribute();
+                attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
+                attribute.setName("gender");
+                attribute.setValue("female");
+                attribute.setType(DeepVISSEventAttribute.TypeEnum.STRING);
+
+                event.getAttributes().add(attribute);
+
+                attribute = new DeepVISSEventAttribute();
+                attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
+                attribute.setName("ageGroup");
+                attribute.setValue("32-45");
+                attribute.setType(DeepVISSEventAttribute.TypeEnum.STRING);
+
+                event.getAttributes().add(attribute);
+
+                attribute = new DeepVISSEventAttribute();
+                attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
+                attribute.setName("age");
+                attribute.setValue("38");
+                attribute.setType(DeepVISSEventAttribute.TypeEnum.INTEGER);
+
+                event.getAttributes().add(attribute);
+
+                attribute = new DeepVISSEventAttribute();
+                attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
+                attribute.setName("gender");
+                attribute.setValue("female");
+                attribute.setType(DeepVISSEventAttribute.TypeEnum.STRING);
+
+                event.getAttributes().add(attribute);
+
+                event.setFeatures(new DeepVISSEventFeatures());
+                event.getFeatures().setAlgorithm("ArcFace-v1.2");
+                event.getFeatures().setMetric(DeepVISSEventFeatures.MetricEnum.EUCLIDEAN);
+                event.getFeatures().setThreshold(0.8);
+                event.getFeatures().setFeatures(new ArrayList<>());
+                for (int featureIndex = 0; featureIndex < maxFeatureIndex; featureIndex++) {
+                    event.getFeatures().addFeaturesItem((random.nextDouble() - 0.5) * 2.0);
+                }
+
+                event.setId(computeEventId(event, frame));
+                event.setObjectType(objectTypes[random.nextInt(objectTypes.length)]);
+                event.setOrientation(new DeepVISSEventOrientation());
+                event.getOrientation().setPitch(random.nextDouble() * 360 - 180);
+                event.getOrientation().setYaw(random.nextDouble() * 360 - 180);
+                event.getOrientation().setRoll(random.nextDouble() * 360 - 180);
+            }
+        }
+        return frameList;
+    }
+
+    private static String computeEventId(DeepVISSEvent event, DeepVISSFrame frame) {
+        String fromtSalt = "K0Oorvb53ZofZHIrffV48Skpefk4ASSffEWOLbat";
+        String backSalt = "cx8nwHumrVfJliMpAf0wYAzztUz2iy55Y2nsS7sV";
+        String originalString = fromtSalt + event.getDetection().getBoundingRectangle().getTop() + "-" +
+                event.getDetection().getBoundingRectangle().getLeft() + "-" +
+                event.getDetection().getBoundingRectangle().getWidth() + "-" +
+                event.getDetection().getBoundingRectangle().getHeight() + "-" +
+                frame.getTimestamps().get("reception").toString() + "-" + frame.getSourceId() + backSalt;
+        String sha512hex = DigestUtils.sha512Hex(originalString);
+        return sha512hex;
+    }
+}
+
