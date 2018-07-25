@@ -16,9 +16,5 @@ The definition of model (objects) and end-points is in
 /src/main/resources/deep-viss.json
 
 
-The code generator is configured in pom.xml
-and one frm
-io.swagger
-
 
 
