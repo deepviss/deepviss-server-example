@@ -81,6 +81,14 @@
             "description":"End time",
             "required":false,
             "type":"string"
+          }, {
+            "name":"includePictureBase64",
+            "in":"query",
+            "description":"If true, this will also include the content of the picture in the response. May render the response verbose.",
+            "required":false,
+            "type":"boolean",
+            "default":"false"
+
           }
         ],
         "responses":{
@@ -103,6 +111,9 @@
   "definitions":{
     "Frame": {
       "type": "object",
+      "xml": {
+        "name": "frame"
+      },
       "properties": {
         "timestamps": {
           "type": "object",
@@ -135,14 +146,13 @@
         "pictureContentType":
         {
           "type": "string",
-          "description": "Picture MIME-type, such ",
+          "description": "Picture MIME-type, such as image/png or image/jpeg",
           "examples":["image/png", "image/jpeg"]
         },
         "events": {
           "type": "array",
           "xml": {
-            "name": "events",
-            "wrapped": true
+            "name": "event"
           },
           "items": {
             "$ref": "#/definitions/Event",
@@ -197,43 +207,48 @@
           ]
         },
         "orientation":{
-          "type":"EventOrientation",
-          "$ref":"#/definitions/EventOrientation",
+          "type":"Orientation",
+          "$ref":"#/definitions/Orientation",
           "description":"What is the geometric orientation of the detected object or event?"
         },
         "attributes":{
           "description":"What are the inferred attributes of the object?",
           "type":"array",
           "xml":{
-            "name":"events",
+            "name":"event",
             "wrapped":true
           },
           "items":{
-            "$ref":"#/definitions/EventAttribute",
-            "type":"EventAttribute"
+            "$ref":"#/definitions/Attribute",
+            "type":"Attribute"
           }
         },
         "detection":{
-          "type":"EventDetection",
-          "$ref":"#/definitions/EventDetection",
+          "type":"Detection",
+          "$ref":"#/definitions/Detection",
           "description":"Detection information"
         },
         "features":{
-          "type":"EventFeatures",
-          "$ref":"#/definitions/EventFeatures",
+          "type":"Features",
+          "$ref":"#/definitions/Features",
           "description":"What are the coordinates of the key points (landmarks, mask outline) of the object?"
+        },
+        "processing":{
+          "type":"ProcessedImage",
+          "$ref":"#/definitions/ProcessedImage",
+          "description":"Any post-processing image returned for this event."
         }
       },
       "xml":{
         "name":"Event"
       }
     },
-    "EventDetection":{
+    "Detection":{
       "type":"object",
       "properties":{
         "boundingRectangle":{
-          "type":"EventBoundingRectangle",
-          "$ref":"#/definitions/EventBoundingRectangle",
+          "type":"BoundingRectangle",
+          "$ref":"#/definitions/BoundingRectangle",
           "description":"Where in the frame has the object been detected?"
         },
         "algorithm":{
@@ -266,10 +281,31 @@
         }
       },
       "xml":{
-        "name":"EventDetection"
+        "name":"Detection"
       }
     },
-    "EventBoundingRectangle":{
+    "ProcessedImage":{
+      "type":"object",
+      "required":[
+      ],
+      "properties":{
+        "pictureBase64":{
+          "description":"Base64 encoded string of the processed picture.",
+          "type":"string",
+          "format":"byte"
+        },
+        "pictureContentType":
+        {
+          "type": "string",
+          "description": "Picture MIME-type, such as image/png or image/jpeg",
+          "examples":["image/png", "image/jpeg"]
+        }
+      },
+      "xml":{
+        "name":"ProcessedImage"
+      }
+    },
+    "BoundingRectangle":{
       "type":"object",
       "required":[
         "top",
@@ -304,7 +340,7 @@
         }
       },
       "xml":{
-        "name":"EventBoundingRectangle"
+        "name":"BoundingRectangle"
       }
     },
     "Point2D":{
@@ -373,7 +409,7 @@
         "name":"Source"
       }
     },
-    "EventOrientation":{
+    "Orientation":{
       "type":"object",
       "required":[
 
@@ -396,10 +432,10 @@
         }
       },
       "xml":{
-        "name":"EventOrientation"
+        "name":"Orientation"
       }
     },
-    "EventFeatures":{
+    "Features":{
       "type":"object",
       "required":[
         "features"
@@ -426,11 +462,11 @@
           "format":"double",
           "example":[0.8, 1.0]
         },
-        "features":{
+        "vector":{
           "description":"N-dimensional feature vector of numerical features representing the unique signature of the object",
           "type":"array",
           "xml":{
-            "name":"features",
+            "name":"vector",
             "wrapped":true
           },
           "items":{
@@ -440,10 +476,10 @@
         }
       },
       "xml":{
-        "name":"EventFeatures"
+        "name":"Features"
       }
     },
-    "EventAttribute":{
+    "Attribute":{
       "type":"object",
       "required":[
         "name",
@@ -495,7 +531,47 @@
         }
       },
       "xml":{
-        "name":"EventAttribute"
+        "name":"Attribute"
+      }
+    },
+    "ProcessingRequest":{
+      "type":"object",
+      "required":[
+        "latitude",
+        "longitude"
+      ],
+      "properties":{
+        "pictureURL":{
+          "description":"The URL where the picture is stored.",
+          "type":"string"
+        },
+        "pictureBase64": {
+          "type": "string",
+          "format":"byte",
+          "description": "Base64 encoded string of the picture."
+        },
+        "pictureContentType":
+        {
+          "type": "string",
+          "description": "Picture MIME-type, such as image/png or image/jpeg",
+          "examples":["image/png", "image/jpeg"]
+        },
+        "regionsOfInterest":
+        {
+          "description":"Define any regions of interest, defined by bounding boxes, where the processing should focus.",
+          "type":"array",
+          "xml":{
+            "name":"roi",
+            "wrapped":true
+          },
+          "items":{
+            "$ref":"#/definitions/BoundingRectangle",
+            "type":"BoundingRectangle"
+          }
+        }
+      },
+      "xml":{
+        "name":"ProcessingRequest"
       }
     },
     "GeoPosition":{
@@ -530,7 +606,7 @@
         "name":"GeoPosition"
       }
     },
-    "EventKeypointsSegment":{
+    "KeypointsSegment":{
       "type":"object",
       "additionalProperties":{
         "type":"array",
@@ -540,7 +616,7 @@
         }
       },
       "xml":{
-        "name":"EventKeypointsSegment"
+        "name":"KeypointsSegment"
       }
     },
     "SourceConnection":{

@@ -32,7 +32,7 @@ public class MockController {
 
     @CrossOrigin(origins = "*")
     //@RequestMapping(value = "/frames", method = RequestMethod.GET, produces= {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    @RequestMapping(value = "/frames", method = RequestMethod.GET, produces= {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    @RequestMapping(value = "/frames", method = RequestMethod.GET, produces= {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     List<DeepVISSFrame> getStatus(
             //@RequestParam(value = "masterKey", required = true) String masterKey
     ) throws IOException, InterruptedException {

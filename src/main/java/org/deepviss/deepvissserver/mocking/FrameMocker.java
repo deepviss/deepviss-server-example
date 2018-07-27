@@ -20,10 +20,11 @@ public class FrameMocker {
     public  List<DeepVISSFrame> getMockedFrames() throws IOException {
 
 
-        Random random = new Random(733183359988335585L);
+        Random random = new Random(733183359988335519L);
         int maxFrameIndex = 3;
         int minEventNumber = 2;
         int maxEventNumber = 4;
+        boolean hasProcessing=false;
         String sourceId = "HikVision 17 - Entrance";
         int maxFeatureIndex = 128;
         String[] algorithmsDetection = new String[]{"hog", "faster-rcnn", "yolo"};
@@ -50,15 +51,21 @@ public class FrameMocker {
             frame.setSourceId(sourceId);
             frame.setPictureUrl("https://scontent.fotp3-2.fna.fbcdn.net/v/t1.0-9/35671578_587625364954981_8949170630209568768_n.png?_nc_cat=0&oh=82807829ab09846f4a2898d50cbb6cba&oe=5BEC7C21");
             frame.setPictureBase64(pictureBytes);
-
+            frame.setPictureContentType("image/jpeg");
             frame.setEvents(new ArrayList<>());
             int eventNumber = (int) Math.round(minEventNumber + random.nextDouble() * maxEventNumber);
             for (int eventIndex = 0; eventIndex < eventNumber; eventIndex++) {
                 DeepVISSEvent event = new DeepVISSEvent();
-                DeepVISSEventDetection detection = new DeepVISSEventDetection();
+                if (!hasProcessing) {
+                    event.setProcessing(new DeepVISSProcessedImage());
+                    event.getProcessing().setPictureBase64(pictureBytes);
+                    event.getProcessing().setPictureContentType("image/jpeg");
+                    hasProcessing=true;
+                }
+                DeepVISSDetection detection = new DeepVISSDetection();
                 detection.setAlgorithm(algorithmsDetection[random.nextInt(algorithmsDetection.length)]);
 
-                detection.setBoundingRectangle(new DeepVISSEventBoundingRectangle());
+                detection.setBoundingRectangle(new DeepVISSBoundingRectangle());
                 detection.getBoundingRectangle().setHeight(100 + random.nextInt(150));
                 detection.getBoundingRectangle().setWidth(100 + random.nextInt(150));
                 detection.getBoundingRectangle().setTop(100 + random.nextInt(150));
@@ -83,52 +90,52 @@ public class FrameMocker {
 
                 frame.getEvents().add(event);
                 event.setAttributes(new ArrayList<>());
-                DeepVISSEventAttribute attribute;
+                DeepVISSAttribute attribute;
 
-                attribute = new DeepVISSEventAttribute();
+                attribute = new DeepVISSAttribute();
                 attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
                 attribute.setName("gender");
                 attribute.setValue("female");
-                attribute.setType(DeepVISSEventAttribute.TypeEnum.STRING);
+                attribute.setType(DeepVISSAttribute.TypeEnum.STRING);
 
                 event.getAttributes().add(attribute);
 
-                attribute = new DeepVISSEventAttribute();
+                attribute = new DeepVISSAttribute();
                 attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
                 attribute.setName("ageGroup");
                 attribute.setValue("32-45");
-                attribute.setType(DeepVISSEventAttribute.TypeEnum.STRING);
+                attribute.setType(DeepVISSAttribute.TypeEnum.STRING);
 
                 event.getAttributes().add(attribute);
 
-                attribute = new DeepVISSEventAttribute();
+                attribute = new DeepVISSAttribute();
                 attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
                 attribute.setName("age");
                 attribute.setValue("38");
-                attribute.setType(DeepVISSEventAttribute.TypeEnum.INTEGER);
+                attribute.setType(DeepVISSAttribute.TypeEnum.INTEGER);
 
                 event.getAttributes().add(attribute);
 
-                attribute = new DeepVISSEventAttribute();
+                attribute = new DeepVISSAttribute();
                 attribute.setConfidence(0.8 + random.nextDouble() * 0.2);
                 attribute.setName("gender");
                 attribute.setValue("female");
-                attribute.setType(DeepVISSEventAttribute.TypeEnum.STRING);
+                attribute.setType(DeepVISSAttribute.TypeEnum.STRING);
 
                 event.getAttributes().add(attribute);
 
-                event.setFeatures(new DeepVISSEventFeatures());
+                event.setFeatures(new DeepVISSFeatures());
                 event.getFeatures().setAlgorithm("ArcFace-v1.2");
-                event.getFeatures().setMetric(DeepVISSEventFeatures.MetricEnum.EUCLIDEAN);
+                event.getFeatures().setMetric(DeepVISSFeatures.MetricEnum.EUCLIDEAN);
                 event.getFeatures().setThreshold(0.8);
-                event.getFeatures().setFeatures(new ArrayList<>());
+                event.getFeatures().setVector(new ArrayList<>());
                 for (int featureIndex = 0; featureIndex < maxFeatureIndex; featureIndex++) {
-                    event.getFeatures().addFeaturesItem((random.nextDouble() - 0.5) * 2.0);
+                    event.getFeatures().addVectorItem((random.nextDouble() - 0.5) * 2.0);
                 }
 
                 event.setId(computeEventId(event, frame));
                 event.setObjectType(objectTypes[random.nextInt(objectTypes.length)]);
-                event.setOrientation(new DeepVISSEventOrientation());
+                event.setOrientation(new DeepVISSOrientation());
                 event.getOrientation().setPitch(random.nextDouble() * 360 - 180);
                 event.getOrientation().setYaw(random.nextDouble() * 360 - 180);
                 event.getOrientation().setRoll(random.nextDouble() * 360 - 180);
