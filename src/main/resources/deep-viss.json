@@ -536,10 +536,6 @@
     },
     "ProcessingRequest":{
       "type":"object",
-      "required":[
-        "latitude",
-        "longitude"
-      ],
       "properties":{
         "pictureURL":{
           "description":"The URL where the picture is stored.",
