@@ -46,8 +46,10 @@ public class FrameMocker {
             timestamp.setReference(DeepVISSFrameTimestamp.ReferenceEnum.ACQUISITION);
             String timestampString="2018-06-24T23:10:28+03:00";
             timestamp.setValue("2018-06-24T23:10:28+03:00");
-            frame.setTimestamps(new HashMap<>());
-            frame.getTimestamps().put("reception", timestampString);
+            frame.setTimestamps(new ArrayList<>());
+            frame.getTimestamps().add(timestamp);
+//            frame.setTimestamps(new HashMap<>());
+//            frame.getTimestamps().put("reception", timestampString);
             frame.setSourceId(sourceId);
             frame.setPictureUrl("https://scontent.fotp3-2.fna.fbcdn.net/v/t1.0-9/35671578_587625364954981_8949170630209568768_n.png?_nc_cat=0&oh=82807829ab09846f4a2898d50cbb6cba&oe=5BEC7C21");
             frame.setPictureBase64(pictureBytes);
@@ -153,7 +155,7 @@ public class FrameMocker {
                 event.getDetection().getBoundingRectangle().getLeft() + "-" +
                 event.getDetection().getBoundingRectangle().getWidth() + "-" +
                 event.getDetection().getBoundingRectangle().getHeight() + "-" +
-                frame.getTimestamps().get("reception").toString() + "-" + frame.getSourceId() + backSalt;
+                frame.getTimestamps().get(0).getValue() + "-" + frame.getSourceId() + backSalt;
         String sha512hex = DigestUtils.sha512Hex(originalString);
         return sha512hex;
     }

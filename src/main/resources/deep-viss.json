@@ -115,19 +115,16 @@
         "name": "frame"
       },
       "properties": {
-        "timestamps": {
-          "type": "object",
-          "description": "Timestamps of the frame.",
-          "required":[
-            "reception"
-          ],
-          "additionalProperties": {
-            "type": "string",
-            "pattern":"/^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/g"
+        "timestamps":{
+          "description":"Defines the several timestamps of acquisition, reception, pre-processing and post-processing respectively.",
+          "type":"array",
+          "xml":{
+            "name":"timestamps",
+            "wrapped":true
           },
-          "xml": {
-            "name": "timestamps",
-            "wrapped": true
+          "items":{
+            "$ref":"#/definitions/FrameTimestamp",
+            "type":"FrameTimestamp"
           }
         },
         "sourceId": {
