@@ -206,11 +206,6 @@
             "ncBPjMAcDb"
           ]
         },
-        "orientation":{
-          "type":"Orientation",
-          "$ref":"#/definitions/Orientation",
-          "description":"What is the geometric orientation of the detected object or event?"
-        },
         "attributes":{
           "description":"What are the inferred attributes of the object?",
           "type":"array",
@@ -250,6 +245,11 @@
           "type":"BoundingRectangle",
           "$ref":"#/definitions/BoundingRectangle",
           "description":"Where in the frame has the object been detected?"
+        },
+        "orientation":{
+          "type":"Orientation",
+          "$ref":"#/definitions/Orientation",
+          "description":"What is the geometric orientation of the detected object or event?"
         },
         "algorithm":{
           "type":"string",

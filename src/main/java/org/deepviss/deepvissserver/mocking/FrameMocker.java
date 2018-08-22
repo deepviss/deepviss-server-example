@@ -71,6 +71,11 @@ public class FrameMocker {
                 detection.getBoundingRectangle().setTop(100 + random.nextInt(150));
                 detection.getBoundingRectangle().setLeft(100 + random.nextInt(150));
 
+                detection.setOrientation(new DeepVISSOrientation());
+                detection.getOrientation().setPitch(random.nextDouble() * 360 - 180);
+                detection.getOrientation().setYaw(random.nextDouble() * 360 - 180);
+                detection.getOrientation().setRoll(random.nextDouble() * 360 - 180);
+
                 detection.setConfidence(0.8 + random.nextDouble() * 0.2);
 
                 detection.setKeyPoints(new HashMap<>());
@@ -135,10 +140,7 @@ public class FrameMocker {
 
                 event.setId(computeEventId(event, frame));
                 event.setObjectType(objectTypes[random.nextInt(objectTypes.length)]);
-                event.setOrientation(new DeepVISSOrientation());
-                event.getOrientation().setPitch(random.nextDouble() * 360 - 180);
-                event.getOrientation().setYaw(random.nextDouble() * 360 - 180);
-                event.getOrientation().setRoll(random.nextDouble() * 360 - 180);
+
             }
         }
         return frameList;
