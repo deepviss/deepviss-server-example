@@ -45,9 +45,7 @@
     "/stream/frames":{
       "get":{
         "tags":[
-          "frame",
-          "event",
-          "timetstamp"
+          "frame"
         ],
         "summary":"Retrieve last frames",
         "description":"Multiple status values can be provided with comma separated strings",
@@ -55,41 +53,6 @@
         "produces":[
           "application/xml",
           "application/json"
-        ],
-        "parameters":[
-          {
-            "name":"sourceId",
-            "in":"query",
-            "description":"Id of the source.",
-            "required":true,
-            "type":"string"
-          }, {
-            "name":"eventType",
-            "in":"query",
-            "description":"Type of the event.",
-            "required":false,
-            "type":"string"
-          }, {
-            "name":"startTime",
-            "in":"query",
-            "description":"Start time.",
-            "required":false,
-            "type":"string"
-          }, {
-            "name":"endTime",
-            "in":"query",
-            "description":"End time",
-            "required":false,
-            "type":"string"
-          }, {
-            "name":"includePictureBase64",
-            "in":"query",
-            "description":"If true, this will also include the content of the picture in the response. May render the response verbose.",
-            "required":false,
-            "type":"boolean",
-            "default":"false"
-
-          }
         ],
         "responses":{
           "200":{
@@ -207,7 +170,7 @@
           "description":"What are the inferred attributes of the object?",
           "type":"array",
           "xml":{
-            "name":"event",
+            "name":"attribute",
             "wrapped":true
           },
           "items":{
@@ -257,13 +220,16 @@
             "hog-svm"
           ]
         },
-        "keyPoints":{
-          "type":"object",
-          "additionalProperties":{
-            "type":"array",
-            "items":{
-              "$ref":"#/definitions/Point2D"
-            }
+        "keypoints":{
+          "description":"What are the keypoints of the object??",
+          "type":"array",
+          "xml":{
+            "name":"keypoints",
+            "wrapped":true
+          },
+          "items":{
+            "$ref":"#/definitions/Point2D",
+            "type":"Point2D"
           }
         },
         "confidence":{

@@ -24,9 +24,10 @@ public class FrameMocker {
         int maxFrameIndex = 3;
         int minEventNumber = 2;
         int maxEventNumber = 4;
-        boolean hasProcessing=false;
+        boolean hasProcessing = false;
         String sourceId = "HikVision 17 - Entrance";
         int maxFeatureIndex = 128;
+        int numberOfKeypoints = 68;
         String[] algorithmsDetection = new String[]{"hog", "faster-rcnn", "yolo"};
         String[] objectTypes = new String[]{"face", "car", "pedestrain", "anomaly"};
         String[] keypointSegmentNames = new String[]{"nose", "mouth", "leftEye", "rightEye"};
@@ -44,7 +45,7 @@ public class FrameMocker {
             frameList.add(frame);
             DeepVISSFrameTimestamp timestamp = new DeepVISSFrameTimestamp();
             timestamp.setReference(DeepVISSFrameTimestamp.ReferenceEnum.ACQUISITION);
-            String timestampString="2018-06-24T23:10:28+03:00";
+            String timestampString = "2018-06-24T23:10:28+03:00";
             timestamp.setValue("2018-06-24T23:10:28+03:00");
             frame.setTimestamps(new ArrayList<>());
             frame.getTimestamps().add(timestamp);
@@ -62,7 +63,7 @@ public class FrameMocker {
                     event.setProcessing(new DeepVISSProcessedImage());
                     event.getProcessing().setPictureBase64(pictureBytes);
                     event.getProcessing().setPictureContentType("image/jpeg");
-                    hasProcessing=true;
+                    hasProcessing = true;
                 }
                 DeepVISSDetection detection = new DeepVISSDetection();
                 detection.setAlgorithm(algorithmsDetection[random.nextInt(algorithmsDetection.length)]);
@@ -80,17 +81,26 @@ public class FrameMocker {
 
                 detection.setConfidence(0.8 + random.nextDouble() * 0.2);
 
-                detection.setKeyPoints(new HashMap<>());
-                for (int segmentIndex = 0; segmentIndex < keypointSegmentNames.length; segmentIndex++) {
-                    int numberOfKeypointsPerSegment = keypointCountPerSegment.get(keypointSegmentNames[segmentIndex]);
-                    detection.getKeyPoints().put(keypointSegmentNames[segmentIndex], new ArrayList<>());
-                    for (int keypointIndex = 0; keypointIndex < numberOfKeypointsPerSegment; keypointIndex++) {
-                        DeepVISSPoint2D point2D = new DeepVISSPoint2D();
-                        point2D.setX(detection.getBoundingRectangle().getLeft() + random.nextInt(detection.getBoundingRectangle().getWidth()));
-                        point2D.setY(detection.getBoundingRectangle().getTop() + random.nextInt(detection.getBoundingRectangle().getHeight()));
+//                detection.setKeyPoints(new HashMap<>());
+//                for (int segmentIndex = 0; segmentIndex < keypointSegmentNames.length; segmentIndex++) {
+//                    int numberOfKeypointsPerSegment = keypointCountPerSegment.get(keypointSegmentNames[segmentIndex]);
+//                    detection.getKeyPoints().put(keypointSegmentNames[segmentIndex], new ArrayList<>());
+//                    for (int keypointIndex = 0; keypointIndex < numberOfKeypointsPerSegment; keypointIndex++) {
+//                        DeepVISSPoint2D point2D = new DeepVISSPoint2D();
+//                        point2D.setX(detection.getBoundingRectangle().getLeft() + random.nextInt(detection.getBoundingRectangle().getWidth()));
+//                        point2D.setY(detection.getBoundingRectangle().getTop() + random.nextInt(detection.getBoundingRectangle().getHeight()));
+//
+//                        detection.getKeyPoints().get(keypointSegmentNames[segmentIndex]).add(point2D);
+//                    }
+//                }
 
-                        detection.getKeyPoints().get(keypointSegmentNames[segmentIndex]).add(point2D);
-                    }
+                detection.setKeypoints(new ArrayList<>());
+                for (int keypointIndex = 0; keypointIndex < numberOfKeypoints; keypointIndex++) {
+                    DeepVISSPoint2D point2D = new DeepVISSPoint2D();
+                    point2D.setX(detection.getBoundingRectangle().getLeft() + random.nextInt(detection.getBoundingRectangle().getWidth()));
+                    point2D.setY(detection.getBoundingRectangle().getTop() + random.nextInt(detection.getBoundingRectangle().getHeight()));
+
+                    detection.getKeypoints().add(point2D);
                 }
 
                 event.setDetection(detection);
