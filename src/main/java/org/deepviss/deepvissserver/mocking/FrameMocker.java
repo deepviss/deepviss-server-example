@@ -9,11 +9,11 @@ import java.util.*;
 
 public class FrameMocker {
 
-    private byte[] pictureBytes;
+    private byte[] imageBytes;
 
     public FrameMocker() throws IOException {
         ClassLoader classLoader = getClass().getClassLoader();
-        pictureBytes=IOUtils.toByteArray(classLoader.getResourceAsStream("static/logo-deepviss-96x96.png"));
+        imageBytes =IOUtils.toByteArray(classLoader.getResourceAsStream("static/logo-deepviss-96x96.png"));
 
     }
 
@@ -52,17 +52,20 @@ public class FrameMocker {
 //            frame.setTimestamps(new HashMap<>());
 //            frame.getTimestamps().put("reception", timestampString);
             frame.setSourceId(sourceId);
-            frame.setPictureUrl("https://scontent.fotp3-2.fna.fbcdn.net/v/t1.0-9/35671578_587625364954981_8949170630209568768_n.png?_nc_cat=0&oh=82807829ab09846f4a2898d50cbb6cba&oe=5BEC7C21");
-            frame.setPictureBase64(pictureBytes);
-            frame.setPictureContentType("image/jpeg");
+            DeepVISSImage image = new DeepVISSImage();
+            image.setImageURL("https://scontent.fotp3-2.fna.fbcdn.net/v/t1.0-9/35671578_587625364954981_8949170630209568768_n.png?_nc_cat=0&oh=82807829ab09846f4a2898d50cbb6cba&oe=5BEC7C21");
+            image.setImageBase64(imageBytes);
+            image.setImageContentType("image/jpeg");
+            frame.setImage(image);
             frame.setEvents(new ArrayList<>());
             int eventNumber = (int) Math.round(minEventNumber + random.nextDouble() * maxEventNumber);
             for (int eventIndex = 0; eventIndex < eventNumber; eventIndex++) {
                 DeepVISSEvent event = new DeepVISSEvent();
                 if (!hasProcessing) {
-                    event.setProcessing(new DeepVISSProcessedImage());
-                    event.getProcessing().setPictureBase64(pictureBytes);
-                    event.getProcessing().setPictureContentType("image/jpeg");
+                    image = new DeepVISSImage();
+                    image.setImageBase64(imageBytes);
+                    image.setImageContentType("image/jpeg");
+                    event.setProcessedImage(image);
                     hasProcessing = true;
                 }
                 DeepVISSDetection detection = new DeepVISSDetection();

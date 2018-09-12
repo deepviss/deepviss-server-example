@@ -94,20 +94,10 @@
           "type": "string",
           "description": "Video source id."
         },
-        "pictureUrl": {
-          "type": "string",
-          "description": "Url of the picture."
-        },
-        "pictureBase64": {
-          "type": "string",
-          "format":"byte",
-          "description": "Base64 encoded string of the picture."
-        },
-        "pictureContentType":
-        {
-          "type": "string",
-          "description": "Picture MIME-type, such as image/png or image/jpeg",
-          "examples":["image/png", "image/jpeg"]
+        "image":{
+          "type":"Image",
+          "$ref":"#/definitions/Image",
+          "description":"Image information"
         },
         "events": {
           "type": "array",
@@ -119,6 +109,28 @@
             "type": "Event"
           }
         }
+      }
+    },
+    "Image":{
+      "type":"object",
+      "properties":{
+        "imageURL":{
+          "description":"The URL where the image is stored.",
+          "type":"string"
+        },
+        "imageBase64":{
+          "type":"string",
+          "format":"byte",
+          "description":"Base64 encoded string of the image."
+        },
+        "imageContentType":{
+          "type":"string",
+          "description":"Image MIME-type, such as image/png or image/jpeg",
+          "examples":["image/png", "image/jpeg"]
+        }
+      },
+      "xml":{
+        "name":"Image"
       }
     },
     "FrameTimestamp":{
@@ -188,9 +200,9 @@
           "$ref":"#/definitions/Features",
           "description":"What are the coordinates of the key points (landmarks, mask outline) of the object?"
         },
-        "processing":{
-          "type":"ProcessedImage",
-          "$ref":"#/definitions/ProcessedImage",
+        "processedImage":{
+          "type":"Image",
+          "$ref":"#/definitions/Image",
           "description":"Any post-processing image returned for this event."
         }
       },
@@ -245,27 +257,6 @@
       },
       "xml":{
         "name":"Detection"
-      }
-    },
-    "ProcessedImage":{
-      "type":"object",
-      "required":[
-      ],
-      "properties":{
-        "pictureBase64":{
-          "description":"Base64 encoded string of the processed picture.",
-          "type":"string",
-          "format":"byte"
-        },
-        "pictureContentType":
-        {
-          "type": "string",
-          "description": "Picture MIME-type, such as image/png or image/jpeg",
-          "examples":["image/png", "image/jpeg"]
-        }
-      },
-      "xml":{
-        "name":"ProcessedImage"
       }
     },
     "BoundingRectangle":{
@@ -500,20 +491,10 @@
     "ProcessingRequest":{
       "type":"object",
       "properties":{
-        "pictureURL":{
-          "description":"The URL where the picture is stored.",
-          "type":"string"
-        },
-        "pictureBase64": {
-          "type": "string",
-          "format":"byte",
-          "description": "Base64 encoded string of the picture."
-        },
-        "pictureContentType":
-        {
-          "type": "string",
-          "description": "Picture MIME-type, such as image/png or image/jpeg",
-          "examples":["image/png", "image/jpeg"]
+        "image":{
+          "type":"Image",
+          "$ref":"#/definitions/Image",
+          "description":"Image information"
         },
         "regionsOfInterest":
         {
