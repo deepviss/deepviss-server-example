@@ -147,7 +147,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/deep-viss.json</inputSpec>
+							<inputSpec>${project.basedir}/src/main/resources/deep-viss-openapi-v3.json</inputSpec>
 							<generatorName>spring</generatorName>
 							<modelPackage>org.deepviss.deepvissserver.model</modelPackage>
 							<apiPackage>org.deepviss.deepvissserver.api</apiPackage>

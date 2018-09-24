@@ -1,0 +1,502 @@
+{
+  "openapi":"3.0.0",
+  
+  "info":{
+    "description":"DeepVISS (Deep Vision Interoperability Specification Standard) allows several computer vision solutions to produce, consume and exchange events in the same format.",
+    "version":"1.0.0",
+    "title":"DeepVISS",
+    "termsOfService":"https://deepviss.org",
+    "contact":{
+      "email":"office@deepviss.org"
+    },
+    "license":{
+      "name":"Apache 2.0",
+      "url":"https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags":[
+    {
+      "name":"frame",
+      "description":"Information about post-processed frames",
+      "externalDocs":{
+        "description":"Find out more",
+        "url":"https://deepviss.org"
+      }
+    },
+    {
+      "name":"event",
+      "description":"Definition of a detection event"
+    },
+    {
+      "name":"source",
+      "description":"Source of original photo or video stream content",
+      "externalDocs":{
+        "description":"Find out more about our store",
+        "url":"http://swagger.io"
+      }
+    }
+  ],
+  "paths":{
+    "/stream/frames":{
+      "get":{
+        "tags":[
+          "frame"
+        ],
+        "summary":"Retrieve last frames",
+        "description":"Multiple status values can be provided with comma separated strings",
+        "operationId":"getLastFrames",
+        "responses":{
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Frame"
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "description":"Invalid status value"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Frame": {
+        "type": "object",
+
+        "properties": {
+          "timestamps": {
+            "description": "Defines the several timestamps of acquisition, reception, pre-processing and post-processing respectively.",
+            "type": "array",
+
+            "items": {
+              "$ref": "#/definitions/FrameTimestamp",
+              "type": "FrameTimestamp"
+            }
+          },
+          "sourceId": {
+            "type": "string",
+            "description": "Video source id."
+          },
+          "image": {
+            "type": "Image",
+            "$ref": "#/definitions/Image",
+            "description": "Image information"
+          },
+          "events": {
+            "type": "array",
+
+            "items": {
+              "$ref": "#/definitions/Event",
+              "type": "Event"
+            }
+          }
+        }
+      },
+      "Image": {
+        "type": "object",
+        "properties": {
+          "imageURL": {
+            "description": "The URL where the image is stored.",
+            "type": "string"
+          },
+          "imageBase64": {
+            "type": "string",
+            "format": "byte",
+            "description": "Base64 encoded string of the image."
+          },
+          "imageContentType": {
+            "type": "string",
+            "description": "Image MIME-type, such as image/png or image/jpeg"
+
+          }
+        }
+
+      },
+      "FrameTimestamp": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "pattern": "/^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/g",
+            "description": "Date and time expressed according to ISO 8601 (e.g. 2018-06-24T23:10:28+03:00)"
+          },
+          "reference": {
+            "type": "string",
+            "enum": [
+              "acquisition",
+              "reception",
+              "preprocessing",
+              "postprocessing"
+            ]
+          }
+        }
+
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "description": "What type of event has been detected?",
+            "example": "vehicle"
+          },
+          "id": {
+            "type": "string",
+            "description": "Unique or almost-unique hash or identifier of the detected event. Can be computed as dependant on frame timestamp, position of detection and event type.",
+            "example": "T2NLg96Xosg7NLg96Xos"
+          },
+          "attributes": {
+            "description": "What are the inferred attributes of the object?",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Attribute",
+              "type": "Attribute"
+            }
+          },
+          "detection": {
+            "type": "Detection",
+            "$ref": "#/definitions/Detection",
+            "description": "Detection information"
+          },
+          "features": {
+            "type": "Features",
+            "$ref": "#/definitions/Features",
+            "description": "What are the coordinates of the key points (landmarks, mask outline) of the object?"
+          },
+          "processedImage": {
+            "type": "Image",
+            "$ref": "#/definitions/Image",
+            "description": "Any post-processing image returned for this event."
+          }
+        }
+
+      },
+      "Detection": {
+        "type": "object",
+        "properties": {
+          "boundingRectangle": {
+            "type": "BoundingRectangle",
+            "$ref": "#/definitions/BoundingRectangle",
+            "description": "Where in the frame has the object been detected?"
+          },
+          "orientation": {
+            "type": "Orientation",
+            "$ref": "#/definitions/Orientation",
+            "description": "What is the geometric orientation of the detected object or event?"
+          },
+          "algorithm": {
+            "type": "string",
+            "description": "What type of algorithm performed the detection",
+            "example": "faster-rcnn"
+          },
+          "keypoints": {
+            "description": "What are the keypoints of the object??",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Point2D",
+              "type": "Point2D"
+            }
+          },
+          "confidence": {
+            "type": "number",
+            "format": "double",
+            "description": "What is the confidence of the detection",
+            "example": 0.9731
+          }
+        }
+      },
+      "BoundingRectangle": {
+        "type": "object",
+        "required": [
+          "top",
+          "left",
+          "width",
+          "height"
+        ],
+        "properties": {
+          "top": {
+            "description": "Top-most position, in pixels, of of the bounding rectangle",
+            "type": "integer",
+            "format": "int32",
+            "example": 32
+          },
+          "left": {
+            "description": "Left-most position, in pixels, of of the bounding rectangle",
+            "type": "integer",
+            "format": "int32",
+            "example": 57
+          },
+          "width": {
+            "description": "Width, in pixels, of the bounding rectangle",
+            "type": "integer",
+            "format": "int32",
+            "example": 237
+          },
+          "height": {
+            "description": "Height, in pixels, of the bounding rectangle",
+            "type": "integer",
+            "format": "int32",
+            "example": 352
+          }
+        }
+      },
+      "Point2D": {
+        "type": "object",
+        "required": [
+          "x",
+          "y"
+        ],
+        "properties": {
+          "x": {
+            "description": "X-coordinate as integer number of pixels measured from the left to the right.",
+            "type": "integer",
+            "format": "int32"
+          },
+          "y": {
+            "description": "Y-coordinate as integer number of pixels measured from the top to the bottom.",
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Source": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "description": "Internal alphanumeric ID of video source",
+            "type": "string"
+          },
+          "name": {
+            "description": "Human-readable name of video source",
+            "type": "string"
+          },
+          "vendor": {
+            "description": "Vendor of the camera",
+            "type": "string"
+          },
+          "model": {
+            "description": "Model of the camera",
+            "type": "string"
+          },
+          "stateless": {
+            "description": "Set to true if stream is expected to have non-continous frames.",
+            "type": "boolean"
+          },
+          "fixedPosition": {
+            "description": "Set to true if camera is expected to move.",
+            "type": "boolean"
+          },
+          "Position": {
+            "description": "The geographic (physical) position of the camera",
+            "type": "GeoPosition"
+          },
+          "connection": {
+            "description": "Details on connection.",
+            "type": "SourceConnection"
+          }
+        }
+      },
+      "Orientation": {
+        "type": "object",
+        "required": [
+        ],
+        "properties": {
+          "yaw": {
+            "description": "The yaw of the detected object or event.",
+            "type": "number",
+            "format": "double"
+          },
+          "pitch": {
+            "description": "The pitch of the detected object or event.",
+            "type": "number",
+            "format": "double"
+          },
+          "roll": {
+            "description": "The roll of the detected object or event.",
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Features": {
+        "type": "object",
+        "required": [
+          "features"
+        ],
+        "properties": {
+          "algorithm": {
+            "description": "The name and version of the algorithm used for feature extraction",
+            "type": "string",
+            "example": "Euclidean tripartite loss function"
+          },
+          "metric": {
+            "description": "The recommended type of metric used ",
+            "type": "string",
+            "example": "Euclidean tripartite loss function",
+            "enum": [
+              "euclidean",
+              "manhattan",
+              "cosine"
+            ]
+          },
+          "threshold": {
+            "description": "The value of the metric threshold",
+            "type": "number",
+            "format": "double",
+            "example": 0.8
+          },
+          "vector": {
+            "description": "N-dimensional feature vector of numerical features representing the unique signature of the object",
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        }
+
+      },
+      "Attribute": {
+        "type": "object",
+        "required": [
+          "name",
+          "value"
+        ],
+        "properties": {
+          "name": {
+            "description": "The name of the attribute",
+            "type": "string",
+            "example": "age-group"
+          },
+          "value": {
+            "description": "The value of the attribute",
+            "type": "string",
+            "example": "32-45"
+          },
+          "confidence": {
+            "description": "The confidence of the classification",
+            "type": "number",
+            "format": "double",
+            "example": 0.93
+          },
+          "type": {
+            "description": "The type of the attribute, to be used in higher order processing and logic.",
+            "type": "string",
+            "enum": [
+              "string",
+              "hex-color",
+              "integer"
+            ]
+          }
+        }
+      },
+      "ProcessingRequest": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "Image",
+            "$ref": "#/definitions/Image",
+            "description": "Image information"
+          },
+          "regionsOfInterest": {
+            "description": "Define any regions of interest, defined by bounding boxes, where the processing should focus.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/BoundingRectangle",
+              "type": "BoundingRectangle"
+            }
+          }
+        }
+      },
+      "GeoPosition": {
+        "type": "object",
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "properties": {
+          "latitude": {
+            "description": "The latitude at which the video source is installed.",
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "description": "The longitude at which the video source is installed.",
+            "type": "number",
+            "format": "double"
+          },
+          "altitude": {
+            "description": "The altitude at which the video source is installed.",
+            "type": "number",
+            "format": "double"
+          },
+          "elevation": {
+            "description": "The elevation from the ground at which the video source is installed, measured in meters.",
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "KeypointsSegment": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Point2D",
+            "type": "Point2D"
+          }
+        }
+      },
+      "SourceConnection": {
+        "type": "object",
+        "required": [
+          "url",
+          "protocol"
+        ],
+        "properties": {
+          "url": {
+            "description": "The hostname of the video source",
+            "type": "string"
+          },
+          "username": {
+            "description": "The username used for authentication to the video source",
+            "type": "string"
+          },
+          "password": {
+            "description": "The password used for authentication to the video source",
+            "type": "string"
+          },
+          "protocol": {
+            "type": "string",
+            "description": "The protocol used to connect to the video source",
+            "enum": [
+              "jpeg_snapshot",
+              "mjpeg",
+              "h264_http",
+              "hls",
+              "webrtc",
+              "image_push",
+              "video_push"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "externalDocs":{
+    "description":"Find out more about DeepVISS",
+    "url":"https://deepviss.org"
+  }
+}
