@@ -703,7 +703,13 @@
             "type": "number",
             "format": "double",
             "example": 0.8
+          },
+          "profiles": {
+            "type": "ObjectProfile",
+            "$ref": "#/definitions/ObjectProfile",
+            "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type."
           }
+
         }
       },
       "ObjectProfile": {
@@ -720,6 +726,11 @@
           "name": {
             "description": "The human-readable name of the profile",
             "type": "string"
+          },
+          "instances": {
+            "type": "ObjectInstance",
+            "$ref": "#/definitions/ObjectInstance",
+            "description": "What are the coordinates of the key points (landmarks, mask outline) of the object?"
           }
         }
       },
@@ -737,7 +748,7 @@
           "features": {
             "type": "Features",
             "$ref": "#/definitions/Features",
-            "description": "What are the coordinates of the key points (landmarks, mask outline) of the object?"
+            "description": "Features extracted from the ObjectInstance"
           }
         }
       }
