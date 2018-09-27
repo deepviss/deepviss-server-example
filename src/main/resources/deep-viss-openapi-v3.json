@@ -37,14 +37,197 @@
     }
   ],
   "paths":{
-    "/stream/frames":{
+    "/stream/Frames":{
       "get":{
         "tags":[
           "frame"
         ],
         "summary":"Retrieve last frames",
         "description":"Multiple status values can be provided with comma separated strings",
-        "operationId":"getLastFrames",
+        "operationId":"GetLastFrames",
+        "parameters":
+        [
+          {
+            "in": "query",
+            "name": "streamId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The identifier of the stream"
+          }
+        ],
+
+        "responses":{
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Frame"
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "description":"Invalid status value"
+          }
+        }
+      }
+    },
+    "/analysis/ProcessingRequest":{
+      "post":{
+        "tags":[
+          "frame"
+        ],
+        "summary":"Analyze a specific frame",
+        "description":"",
+        "operationId":"ImageAnalysis",
+        "parameters":
+        [
+          {
+            "in": "query",
+            "name": "streamId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The identifier of the stream"
+          }
+        ],
+        "requestBody": {
+          "description": "Deliver the image to be analyzed *Markdown*",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessingRequest"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/ProcessingRequest"
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Frame"
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "description":"Invalid status value"
+          }
+        }
+      }
+    },
+    "/analysis/ImagesArray":{
+      "post":{
+        "tags":[
+          "frame"
+        ],
+        "summary":"Analyze an array of images",
+        "description":"",
+        "operationId":"ImageArrayAnalysis",
+        "parameters":
+        [
+          {
+            "in": "query",
+            "name": "streamId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The identifier of the stream"
+          }
+        ],
+        "requestBody": {
+          "description": "Deliver the image to be analyzed *Markdown*",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "filename": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses":{
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Frame"
+                  }
+                }
+              }
+            }
+          },
+          "400":{
+            "description":"Invalid status value"
+          }
+        }
+      }
+    },
+    "/analysis/Image":{
+      "post":{
+        "tags":[
+          "frame"
+        ],
+        "summary":"Analyze a single image",
+        "description":"",
+        "operationId":"ImageAnalysis",
+        "parameters":
+        [
+          {
+            "in": "query",
+            "name": "streamId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The identifier of the stream"
+          }
+        ],
+        "requestBody": {
+          "description": "Deliver the image to be analyzed *Markdown*",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "filename": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses":{
           "200": {
             "description": "successful operation",
@@ -70,12 +253,10 @@
     "schemas": {
       "Frame": {
         "type": "object",
-
         "properties": {
           "timestamps": {
             "description": "Defines the several timestamps of acquisition, reception, pre-processing and post-processing respectively.",
             "type": "array",
-
             "items": {
               "$ref": "#/definitions/FrameTimestamp",
               "type": "FrameTimestamp"
@@ -92,7 +273,6 @@
           },
           "events": {
             "type": "array",
-
             "items": {
               "$ref": "#/definitions/Event",
               "type": "Event"
@@ -115,10 +295,8 @@
           "imageContentType": {
             "type": "string",
             "description": "Image MIME-type, such as image/png or image/jpeg"
-
           }
         }
-
       },
       "FrameTimestamp": {
         "type": "object",
@@ -138,7 +316,6 @@
             ]
           }
         }
-
       },
       "Event": {
         "type": "object",
@@ -177,7 +354,6 @@
             "description": "Any post-processing image returned for this event."
           }
         }
-
       },
       "Detection": {
         "type": "object",
@@ -366,7 +542,6 @@
             }
           }
         }
-
       },
       "Attribute": {
         "type": "object",
@@ -490,6 +665,79 @@
               "image_push",
               "video_push"
             ]
+          }
+        }
+      },
+      "ObjectCollection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the collection",
+            "type": "string"
+          },
+          "name": {
+            "description": "The human-readable name of the collection",
+            "type": "string"
+          },
+          "objectType": {
+            "description": "The type of objects in the collection. A collection can only hold objects of the same type.",
+            "type": "string"
+          },
+          "algorithm": {
+            "description": "The name and version of the algorithm used for feature extraction. A collection can only hold objects with the same feature space (latent space).",
+            "type": "string",
+            "example": "Euclidean tripartite loss function"
+          },
+          "metric": {
+            "description": "The metric used for comparing collection objects ",
+            "type": "string",
+            "example": "Euclidean tripartite loss function",
+            "enum": [
+              "euclidean",
+              "manhattan",
+              "cosine"
+            ]
+          },
+          "threshold": {
+            "description": "The recommended metric value recommended to be used as threshold",
+            "type": "number",
+            "format": "double",
+            "example": 0.8
+          }
+        }
+      },
+      "ObjectProfile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the object profile, containing several ObjectInstance. ObjectProfiles belong to ObjectCollections.",
+            "type": "string"
+          },
+          "collectionId": {
+            "description": "The ID of parent collection.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The human-readable name of the profile",
+            "type": "string"
+          }
+        }
+      },
+      "ObjectInstance": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the object instance, containing the feature vector. ObjectInstances belong to ObjectProfiles, which in turn belong to ObjectCollections.",
+            "type": "string"
+          },
+          "profileId": {
+            "description": "The ID of parent profile.",
+            "type": "string"
+          },
+          "features": {
+            "type": "Features",
+            "$ref": "#/definitions/Features",
+            "description": "What are the coordinates of the key points (landmarks, mask outline) of the object?"
           }
         }
       }
