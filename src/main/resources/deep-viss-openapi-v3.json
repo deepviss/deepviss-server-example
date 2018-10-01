@@ -705,11 +705,13 @@
             "example": 0.8
           },
           "profiles": {
-            "type": "ObjectProfile",
-            "$ref": "#/definitions/ObjectProfile",
-            "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type."
+            "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ObjectProfile",
+              "type": "ObjectProfile"
+            }
           }
-
         }
       },
       "ObjectProfile": {
@@ -728,9 +730,12 @@
             "type": "string"
           },
           "instances": {
-            "type": "ObjectInstance",
-            "$ref": "#/definitions/ObjectInstance",
-            "description": "What are the coordinates of the key points (landmarks, mask outline) of the object?"
+            "description": "List of ObjectInstances",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ObjectInstance",
+              "type": "ObjectInstance"
+            }
           }
         }
       },
@@ -745,10 +750,15 @@
             "description": "The ID of parent profile.",
             "type": "string"
           },
-          "features": {
-            "type": "Features",
-            "$ref": "#/definitions/Features",
-            "description": "Features extracted from the ObjectInstance"
+          "image": {
+            "type": "Image",
+            "$ref": "#/definitions/Image",
+            "description": "Original image information associated with the ObjectInstance"
+          },
+          "event": {
+            "type": "Event",
+            "$ref": "#/definitions/Event",
+            "description": "Event associated with the ObjectInstance"
           }
         }
       }
