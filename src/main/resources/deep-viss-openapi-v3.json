@@ -1,52 +1,50 @@
 {
-  "openapi":"3.0.0",
-  
-  "info":{
-    "description":"DeepVISS (Deep Vision Interoperability Specification Standard) allows several computer vision solutions to produce, consume and exchange events in the same format.",
-    "version":"1.0.0",
-    "title":"DeepVISS",
-    "termsOfService":"https://deepviss.org",
-    "contact":{
-      "email":"office@deepviss.org"
+  "openapi": "3.0.0",
+  "info": {
+    "description": "DeepVISS (Deep Vision Interoperability Specification Standard) allows several computer vision solutions to produce, consume and exchange events in the same format.",
+    "version": "1.0.0",
+    "title": "DeepVISS",
+    "termsOfService": "https://deepviss.org",
+    "contact": {
+      "email": "office@deepviss.org"
     },
-    "license":{
-      "name":"Apache 2.0",
-      "url":"https://www.apache.org/licenses/LICENSE-2.0.html"
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "tags":[
+  "tags": [
     {
-      "name":"frame",
-      "description":"Information about post-processed frames",
-      "externalDocs":{
-        "description":"Find out more",
-        "url":"https://deepviss.org"
+      "name": "frame",
+      "description": "Information about post-processed frames",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://deepviss.org"
       }
     },
     {
-      "name":"event",
-      "description":"Definition of a detection event"
+      "name": "event",
+      "description": "Definition of a detection event"
     },
     {
-      "name":"source",
-      "description":"Source of original photo or video stream content",
-      "externalDocs":{
-        "description":"Find out more about our store",
-        "url":"http://swagger.io"
+      "name": "source",
+      "description": "Source of original photo or video stream content",
+      "externalDocs": {
+        "description": "Find out more about our store",
+        "url": "http://swagger.io"
       }
     }
   ],
-  "paths":{
-    "/stream/Frames":{
-      "get":{
-        "tags":[
+  "paths": {
+    "/stream/Frames": {
+      "get": {
+        "tags": [
           "frame"
         ],
-        "summary":"Retrieve last frames",
-        "description":"Multiple status values can be provided with comma separated strings",
-        "operationId":"GetLastFrames",
-        "parameters":
-        [
+        "summary": "Retrieve last frames",
+        "description": "Multiple status values can be provided with comma separated strings",
+        "operationId": "GetLastFrames",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -56,8 +54,7 @@
             "description": "The identifier of the stream"
           }
         ],
-
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -71,22 +68,21 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
     },
-    "/analysis/ProcessingRequest":{
-      "post":{
-        "tags":[
+    "/analysis/ProcessingRequest": {
+      "post": {
+        "tags": [
           "frame"
         ],
-        "summary":"Analyze a specific frame",
-        "description":"",
-        "operationId":"ImageAnalysis",
-        "parameters":
-        [
+        "summary": "Analyze a specific frame",
+        "description": "",
+        "operationId": "ImageAnalysis",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -112,7 +108,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -126,22 +122,21 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
     },
-    "/analysis/ImagesArray":{
-      "post":{
-        "tags":[
+    "/analysis/ImagesArray": {
+      "post": {
+        "tags": [
           "frame"
         ],
-        "summary":"Analyze an array of images",
-        "description":"",
-        "operationId":"ImageArrayAnalysis",
-        "parameters":
-        [
+        "summary": "Analyze an array of images",
+        "description": "",
+        "operationId": "ImageArrayAnalysis",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -170,7 +165,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -184,22 +179,21 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
     },
-    "/analysis/Image":{
-      "post":{
-        "tags":[
+    "/analysis/Image": {
+      "post": {
+        "tags": [
           "frame"
         ],
-        "summary":"Analyze a single image",
-        "description":"",
-        "operationId":"ImageAnalysis",
-        "parameters":
-        [
+        "summary": "Analyze a single image",
+        "description": "",
+        "operationId": "ImageAnalysis",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -228,7 +222,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -242,8 +236,8 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
@@ -330,6 +324,11 @@
             "description": "Unique or almost-unique hash or identifier of the detected event. Can be computed as dependant on frame timestamp, position of detection and event type.",
             "example": "T2NLg96Xosg7NLg96Xos"
           },
+          "tracking": {
+            "type": "Tracking",
+            "$ref": "#/definitions/Tracking",
+            "description": "The tracking of the object"
+          },
           "attributes": {
             "description": "What are the inferred attributes of the object?",
             "type": "array",
@@ -386,6 +385,39 @@
             "format": "double",
             "description": "What is the confidence of the detection",
             "example": 0.9731
+          }
+        }
+      },
+      "Tracking": {
+        "type": "object",
+        "properties": {
+          "trackingId": {
+            "description": "Unique or almost-unique tracking ID consistently given to an object throughout several frames. Can be set as the original detection id from the first frame where the object started being trackied or by the hash of the tracked object.",
+            "type": "string",
+            "example": "goruhg34out4534"
+          },
+          "contextId": {
+            "description": "Reference to a shared tracking context, which may be shared between streams.",
+            "type": "string",
+            "example": "o4jkeo;rgjeringqer"
+          },
+          "dx": {
+            "description": "Variation from the last occurence of the same object on the left-right dimension, from the perspectivee of the object.",
+            "type": "integer",
+            "format": "int32",
+            "example": 32
+          },
+          "dy": {
+            "description": "Variation from the last occurence of the same object on the front-back dimension, from the perspective of the object.",
+            "type": "integer",
+            "format": "int32",
+            "example": 57
+          },
+          "dz": {
+            "description": "Variation from the last occurence of the same object on the up-down dimension, from the perspective of the object.",
+            "type": "integer",
+            "format": "int32",
+            "example": 237
           }
         }
       },
@@ -709,7 +741,6 @@
             "$ref": "#/definitions/ObjectProfile",
             "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type."
           }
-
         }
       },
       "ObjectProfile": {
@@ -728,9 +759,20 @@
             "type": "string"
           },
           "instances": {
-            "type": "ObjectInstance",
-            "$ref": "#/definitions/ObjectInstance",
-            "description": "What are the coordinates of the key points (landmarks, mask outline) of the object?"
+            "description": "The list of object instances statically assigned to the object profile.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ObjectInstance",
+              "type": "ObjectInstance"
+            }
+          },
+          "occurences": {
+            "description": "The list of object instances dynamically assigned to the object profile.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ObjectOccurrence",
+              "type": "ObjectOccurrence"
+            }
           }
         }
       },
@@ -751,11 +793,63 @@
             "description": "Features extracted from the ObjectInstance"
           }
         }
+      },
+      "ObjectOccurrence": {
+        "type": "object",
+        "properties": {
+          "sourceId": {
+            "description": "The ID of the source from which the frame originated",
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "FrameTimestamp",
+            "$ref": "#/definitions/FrameTimestamp",
+            "description": "The timestamp of the frame from which match originated."
+          },
+          "id": {
+            "description": "The ID of the object instance, containing the feature vector. ObjectInstances belong to ObjectProfiles, which in turn belong to ObjectCollections.",
+            "type": "string"
+          },
+          "profileId": {
+            "description": "The ID of top-matched parent profile, if any",
+            "type": "string"
+          },
+          "features": {
+            "type": "Features",
+            "$ref": "#/definitions/Features",
+            "description": "Features extracted from the ObjectInstance"
+          },
+          "matches": {
+            "description": "The list of profile that object matched as compared to a list of collections, at a specific time",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ObjectMatch",
+              "type": "ObjectMatch"
+            }
+          }
+        }
+      },
+      "ObjectMatch": {
+        "type": "object",
+        "properties": {
+          "collectionId": {
+            "description": "The ID of the collection from which the match was made",
+            "type": "string"
+          },
+          "profileId": {
+            "description": "The ID of the profile that was matched.",
+            "type": "string"
+          },
+          "matchRate": {
+            "description": "The ID of the profile that was matched.",
+            "type": "string"
+          }
+        }
       }
     }
   },
-  "externalDocs":{
-    "description":"Find out more about DeepVISS",
-    "url":"https://deepviss.org"
+  "externalDocs": {
+    "description": "Find out more about DeepVISS",
+    "url": "https://deepviss.org"
   }
 }
