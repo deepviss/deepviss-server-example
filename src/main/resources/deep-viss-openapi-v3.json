@@ -728,12 +728,6 @@
             "type": "string"
           },
           "instances": {
-            "description": "List of ObjectInstances",
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/ObjectInstance",
-              "type": "ObjectInstance"
-            }
             "description": "The list of object instances statically assigned to the object profile.",
             "type": "array",
             "items": {
