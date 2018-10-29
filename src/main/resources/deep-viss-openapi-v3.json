@@ -342,6 +342,11 @@
             "$ref": "#/definitions/Detection",
             "description": "Detection information"
           },
+          "transcription": {
+            "type": "Transcription",
+            "$ref": "#/definitions/Transcription",
+            "description": "Information for transcription and optical character recognition."
+          },
           "features": {
             "type": "Features",
             "$ref": "#/definitions/Features",
@@ -842,7 +847,24 @@
           },
           "matchRate": {
             "description": "The ID of the profile that was matched.",
+            "type": "number",
+            "format": "double",
+            "example": 0.79
+          }
+        }
+      },
+      "Transcription": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "description": "The ID of the collection from which the match was made",
             "type": "string"
+          },
+          "confidence":
+          {
+            "type": "number",
+            "format": "double",
+            "example": 0.83
           }
         }
       }
