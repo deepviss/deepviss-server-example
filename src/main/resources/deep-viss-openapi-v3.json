@@ -247,6 +247,7 @@
     "schemas": {
       "Frame": {
         "type": "object",
+        "description":"Defines a frame being analyzed by one or several computer vision workloads.",
         "properties": {
           "timestamps": {
             "description": "Defines the several timestamps of acquisition, reception, pre-processing and post-processing respectively.",
@@ -785,7 +786,7 @@
         "type": "object",
         "properties": {
           "id": {
-            "description": "The ID of the object instance, containing the feature vector. ObjectInstances belong to ObjectProfiles, which in turn belong to ObjectCollections.",
+            "description": "The ID of the object instance, containing the feature vector. Ideally, it should be assigned as a hash (perceptual or cryptographic) of the feature vector. ObjectInstances belong to ObjectProfiles, which in turn belong to ObjectCollections.",
             "type": "string"
           },
           "profileId": {
@@ -811,18 +812,13 @@
             "$ref": "#/definitions/FrameTimestamp",
             "description": "The timestamp of the frame from which match originated."
           },
-          "id": {
-            "description": "The ID of the object instance, containing the feature vector. ObjectInstances belong to ObjectProfiles, which in turn belong to ObjectCollections.",
+          "detectionId": {
+            "description": "The ID of the object instance",
             "type": "string"
           },
-          "profileId": {
-            "description": "The ID of top-matched parent profile, if any",
-            "type": "string"
-          },
-          "features": {
-            "type": "Features",
-            "$ref": "#/definitions/Features",
-            "description": "Features extracted from the ObjectInstance"
+          "objectInstanceId": {
+            "type": "string",
+            "description": "The id of the object instance."
           },
           "matches": {
             "description": "The list of profile that object matched as compared to a list of collections, at a specific time",
@@ -851,6 +847,17 @@
             "format": "double",
             "example": 0.79
           }
+        }
+      },
+      "ObjectBucket": {
+        "description":"[TODO: Object definition] Unsorted and unassigned set of object occurences, which can server for clustering and later historical-matching.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "The ID of the bucket of object instances",
+            "type": "string"
+          }
+
         }
       },
       "Transcription": {
