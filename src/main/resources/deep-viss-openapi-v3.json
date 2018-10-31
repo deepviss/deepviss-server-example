@@ -338,6 +338,11 @@
               "type": "Attribute"
             }
           },
+          "tracking": {
+            "type": "Tracking",
+            "$ref": "#/definitions/Tracking",
+            "description": "Tracking id and tracking detection"
+          },
           "detection": {
             "type": "Detection",
             "$ref": "#/definitions/Detection",
@@ -468,6 +473,10 @@
           },
           "stateless": {
             "description": "Set to true if stream is expected to have non-continous frames.",
+            "type": "boolean"
+          },
+          "bounded": {
+            "description": "Set to true if stream represents a finite-duration video (like a movie upload)",
             "type": "boolean"
           },
           "fixedPosition": {
@@ -833,6 +842,21 @@
         "properties": {
           "text": {
             "description": "The ID of the collection from which the match was made",
+            "type": "string"
+          },
+          "confidence":
+          {
+            "type": "number",
+            "format": "double",
+            "example": 0.83
+          }
+        }
+      },
+      "Tracking": {
+        "type": "object",
+        "properties": {
+          "trackingId": {
+            "description": "The tracking Id of the object",
             "type": "string"
           },
           "confidence":
