@@ -19,20 +19,16 @@
       "name":"frame",
       "description":"Information about post-processed frames",
       "externalDocs":{
-        "description":"Find out more",
+        "description":"Streaming API",
         "url":"https://deepviss.org"
       }
     },
     {
-      "name":"event",
-      "description":"Definition of a detection event"
-    },
-    {
-      "name":"source",
-      "description":"Source of original photo or video stream content",
+      "name":"analysis",
+      "description":"End-points for image or image array analysis",
       "externalDocs":{
-        "description":"Find out more about our store",
-        "url":"http://swagger.io"
+        "description":"Find out more",
+        "url":"https://deepviss.org"
       }
     }
   ],
@@ -80,7 +76,7 @@
     "/analysis/ProcessingRequest":{
       "post":{
         "tags":[
-          "frame"
+          "analysis"
         ],
         "summary":"Analyze a specific frame",
         "description":"",
@@ -135,7 +131,7 @@
     "/analysis/ImagesArray":{
       "post":{
         "tags":[
-          "frame"
+          "analysis"
         ],
         "summary":"Analyze an array of images",
         "description":"",
@@ -193,7 +189,7 @@
     "/analysis/Image":{
       "post":{
         "tags":[
-          "frame"
+          "analysis"
         ],
         "summary":"Analyze a single image",
         "description":"",
