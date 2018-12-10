@@ -347,7 +347,7 @@
           "features": {
             "type": "Features",
             "$ref": "#/definitions/Features",
-            "description": "What are the coordinates of the key points (landmarks, mask outline) of the object?"
+            "description": "What are the features extracted from the detected object?"
           },
           "processedImage": {
             "type": "Image",
@@ -538,6 +538,11 @@
             "format": "double",
             "example": 0.8
           },
+          "hash": {
+            "description": "The hash of the features, for quick exact-match look-up",
+            "type": "string",
+            "example": "8e347f952424ec9dadb61ab399074362ade84f76f2e5e78de41978d1baa8aaadaace00ec5f93e57c8bfb92d07d5c248873f9ac7964027c80a4e4d0e88fa56459",
+          },
           "vector": {
             "description": "N-dimensional feature vector of numerical features representing the unique signature of the object",
             "type": "array",
@@ -724,6 +729,10 @@
             "description": "The ID of the object profile, containing several ObjectInstance. ObjectProfiles belong to ObjectCollections.",
             "type": "string"
           },
+          "externalId": {
+            "description": "The ID of the object profile, containing several ObjectInstance. ObjectProfiles belong to ObjectCollections.",
+            "type": "string"
+          },
           "collectionId": {
             "description": "The ID of parent collection.",
             "type": "string"
@@ -766,10 +775,10 @@
             "$ref": "#/definitions/Image",
             "description": "Original image information associated with the ObjectInstance"
           },
-          "event": {
-            "type": "Event",
-            "$ref": "#/definitions/Event",
-            "description": "Event associated with the ObjectInstance"
+          "features": {
+            "type": "Features",
+            "$ref": "#/definitions/Features",
+            "description": "What are the features extracted from the detected object?"
           }
         }
       },
@@ -806,6 +815,10 @@
       "ObjectMatch": {
         "type": "object",
         "properties": {
+          "matchType": {
+            "description": "The match with an object",
+            "type": "string"
+          },
           "collectionId": {
             "description": "The ID of the collection from which the match was made",
             "type": "string"
