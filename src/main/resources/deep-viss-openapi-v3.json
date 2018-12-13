@@ -541,7 +541,7 @@
           "hash": {
             "description": "The hash of the features, for quick exact-match look-up",
             "type": "string",
-            "example": "8e347f952424ec9dadb61ab399074362ade84f76f2e5e78de41978d1baa8aaadaace00ec5f93e57c8bfb92d07d5c248873f9ac7964027c80a4e4d0e88fa56459",
+            "example": "8e347f952424ec9dadb61ab399074362ade84f76f2e5e78de41978d1baa8aaadaace00ec5f93e57c8bfb92d07d5c248873f9ac7964027c80a4e4d0e88fa56459"
           },
           "vector": {
             "description": "N-dimensional feature vector of numerical features representing the unique signature of the object",
