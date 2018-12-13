@@ -794,7 +794,7 @@
             "$ref": "#/definitions/FrameTimestamp",
             "description": "The timestamp of the frame from which match originated."
           },
-          "detectionId": {
+          "eventId": {
             "description": "The ID of the object instance",
             "type": "string"
           },

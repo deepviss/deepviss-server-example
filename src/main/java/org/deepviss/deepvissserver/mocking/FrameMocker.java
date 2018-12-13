@@ -17,6 +17,19 @@ public class FrameMocker {
 
     }
 
+    public DeepVISSProcessingRequest getMockedProcessingRequest(byte[] contentBytes, String contentType)
+    {
+        DeepVISSImage deepVISSImage=new DeepVISSImage();
+        List<DeepVISSBoundingRectangle> boundingBoxes=new ArrayList<>();
+        DeepVISSProcessingRequest deepVISSProcessingRequest=new DeepVISSProcessingRequest();
+        deepVISSProcessingRequest.setImage(deepVISSImage);
+        deepVISSProcessingRequest.setRegionsOfInterest(boundingBoxes);
+        deepVISSImage.setImageContentType(contentType);
+        deepVISSImage.setImageBase64(contentBytes);
+
+        return deepVISSProcessingRequest;
+    }
+
     public  List<DeepVISSFrame> getMockedFrames() throws IOException {
 
 
