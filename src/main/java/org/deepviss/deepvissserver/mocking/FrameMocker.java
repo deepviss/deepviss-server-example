@@ -24,6 +24,13 @@ public class FrameMocker {
         DeepVISSProcessingRequest deepVISSProcessingRequest=new DeepVISSProcessingRequest();
         deepVISSProcessingRequest.setImage(deepVISSImage);
         deepVISSProcessingRequest.setRegionsOfInterest(boundingBoxes);
+        DeepVISSBoundingRectangle deepVISSBoundingRectangle= new DeepVISSBoundingRectangle();
+        deepVISSBoundingRectangle.setHeight(100);
+        deepVISSBoundingRectangle.setWidth(250);
+        deepVISSBoundingRectangle.setLeft(130);
+        deepVISSBoundingRectangle.setTop(280);
+        deepVISSProcessingRequest.getRegionsOfInterest().add(deepVISSBoundingRectangle);
+        deepVISSProcessingRequest.getRegionsOfInterest().add(deepVISSBoundingRectangle);
         deepVISSImage.setImageContentType(contentType);
         deepVISSImage.setImageBase64(contentBytes);
 
@@ -82,7 +89,6 @@ public class FrameMocker {
                     hasProcessing = true;
                 }
                 DeepVISSDetection detection = new DeepVISSDetection();
-                detection.setAlgorithm(algorithmsDetection[random.nextInt(algorithmsDetection.length)]);
 
                 detection.setBoundingRectangle(new DeepVISSBoundingRectangle());
                 detection.getBoundingRectangle().setHeight(100 + random.nextInt(150));

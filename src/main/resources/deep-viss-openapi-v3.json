@@ -52,7 +52,6 @@
             "description": "The identifier of the stream"
           }
         ],
-
         "responses":{
           "200": {
             "description": "successful operation",
@@ -258,6 +257,18 @@
               "type": "FrameTimestamp"
             }
           },
+          "frameId": {
+            "type": "string",
+            "description": "Alpha-numeric, unique id of frame. You can use (timestamp+sourceId) or sha512(timestamp+sourceId)",
+            "example": "7E43358680768EF053898993DD196397EDFDDFBC81751818B7FD1300124455B07E91CB289F87791D78064ECC93754F19B13D419489F162A150A22DD814CKAF0E"
+          },
+          "frameCounter":
+          {
+            "type": "integer",
+            "format": "int32",
+            "description": "Per-source incremental frame counter",
+             "example": 86537
+          },
           "sourceId": {
             "type": "string",
             "description": "Video source id."
@@ -273,7 +284,17 @@
               "$ref": "#/definitions/Event",
               "type": "Event"
             }
+          },
+          "timing":{
+            "type": "object",
+            "additionalProperties":"true"
+          },
+          "debug":{
+            "type": "object",
+            "additionalProperties":"true"
           }
+
+
         }
       },
       "Image": {
@@ -602,6 +623,27 @@
               "$ref": "#/definitions/BoundingRectangle",
               "type": "BoundingRectangle"
             }
+          },
+          "parameters":
+          {
+            "type": "object",
+            "additionalProperties":"true"
+          },
+          "frameId": {
+            "type": "string",
+            "description": "Alpha-numeric, unique id of frame. You can use (timestamp+sourceId) or sha512(timestamp+sourceId)",
+            "example": "7E43358680768EF053898993DD196397EDFDDFBC81751818B7FD1300124455B07E91CB289F87791D78064ECC93754F19B13D419489F162A150A22DD814CKAF0E"
+          },
+          "frameCounter":
+          {
+            "type": "integer",
+            "format": "int32",
+            "description": "Per-source incremental frame counter",
+            "example": 86537
+          },
+          "sourceId": {
+            "type": "string",
+            "description": "Video source id."
           }
         }
       },
