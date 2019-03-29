@@ -779,7 +779,7 @@
             "description": "The ID of parent collection.",
             "type": "string"
           },
-          "name": {
+          "displayName": {
             "description": "The human-readable name of the profile",
             "type": "string"
           },
