@@ -1,10 +1,10 @@
 {
   "openapi":"3.0.0",
-  
+
   "info":{
     "description":"DeepVISS (Deep Vision Interoperability Specification Standard) allows several computer vision solutions to produce, consume and exchange events in the same format.",
-    "version":"1.0.0",
-    "title":"DeepVISS",
+    "version":"1.3.0",
+    "title":"DeepVISS OPS",
     "termsOfService":"https://deepviss.org",
     "contact":{
       "email":"office@deepviss.org"
@@ -267,7 +267,7 @@
             "type": "integer",
             "format": "int32",
             "description": "Per-source incremental frame counter",
-             "example": 86537
+            "example": 86537
           },
           "sourceId": {
             "type": "string",
@@ -465,6 +465,49 @@
           }
         }
       },
+
+
+      "SourceStatus": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+
+
+          "ingestedFrame":
+          {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of frame which have been successfully captured.",
+            "example": 86537
+          },
+          "processedFrames":
+          {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of frame which have been successfully processed.",
+            "example": 86537
+          },
+          "ingestedErrorCount":
+          {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of errors, dropped or missed frames from acquisition",
+            "example": 86537
+          },
+          "processedErrorCount":
+          {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of errors, dropped or missed frames from processing",
+            "example": 86537
+          }
+        }
+      },
+
+
       "Source": {
         "type": "object",
         "required": [
@@ -546,7 +589,8 @@
           "metric": {
             "description": "The recommended type of metric used ",
             "type": "string",
-            "example": "Euclidean tripartite loss function",
+            "example":"euclidean",
+            "description": "Euclidean tripartite loss function",
             "enum": [
               "euclidean",
               "manhattan",
@@ -791,7 +835,13 @@
               "type": "ObjectInstance"
             }
           },
-          "occurences": {
+          "attributes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "occurrences": {
             "description": "The list of object instances dynamically assigned to the object profile.",
             "type": "array",
             "items": {
@@ -910,8 +960,13 @@
             "description": "The tracking Id of the object",
             "type": "string"
           },
+          "contextId": {
+            "description": "The context from which the tracking originated",
+            "type": "string"
+          },
           "confidence":
           {
+            "description": "The confidence that the object is tracked correctly and consistently.",
             "type": "number",
             "format": "double",
             "example": 0.83
