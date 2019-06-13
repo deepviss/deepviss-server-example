@@ -1,48 +1,46 @@
 {
-  "openapi":"3.0.0",
-
-  "info":{
-    "description":"DeepVISS (Deep Vision Interoperability Specification Standard) allows several computer vision solutions to produce, consume and exchange events in the same format.",
-    "version":"1.3.0",
-    "title":"DeepVISS OPS",
-    "termsOfService":"https://deepviss.org",
-    "contact":{
-      "email":"office@deepviss.org"
+  "openapi": "3.0.0",
+  "info": {
+    "description": "DeepVISS (Deep Vision Interoperability Specification Standard) allows several computer vision solutions to produce, consume and exchange events in the same format.",
+    "version": "1.3.0",
+    "title": "DeepVISS OPS",
+    "termsOfService": "https://deepviss.org",
+    "contact": {
+      "email": "office@deepviss.org"
     },
-    "license":{
-      "name":"Apache 2.0",
-      "url":"https://www.apache.org/licenses/LICENSE-2.0.html"
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     }
   },
-  "tags":[
+  "tags": [
     {
-      "name":"frame",
-      "description":"Information about post-processed frames",
-      "externalDocs":{
-        "description":"Streaming API",
-        "url":"https://deepviss.org"
+      "name": "frame",
+      "description": "Information about post-processed frames",
+      "externalDocs": {
+        "description": "Streaming API",
+        "url": "https://deepviss.org"
       }
     },
     {
-      "name":"analysis",
-      "description":"End-points for image or image array analysis",
-      "externalDocs":{
-        "description":"Find out more",
-        "url":"https://deepviss.org"
+      "name": "analysis",
+      "description": "End-points for image or image array analysis",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "https://deepviss.org"
       }
     }
   ],
-  "paths":{
-    "/stream/Frames":{
-      "get":{
-        "tags":[
+  "paths": {
+    "/stream/Frames": {
+      "get": {
+        "tags": [
           "frame"
         ],
-        "summary":"Retrieve last frames",
-        "description":"Multiple status values can be provided with comma separated strings",
-        "operationId":"GetLastFrames",
-        "parameters":
-        [
+        "summary": "Retrieve last frames",
+        "description": "Multiple status values can be provided with comma separated strings",
+        "operationId": "GetLastFrames",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -52,7 +50,7 @@
             "description": "The identifier of the stream"
           }
         ],
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -66,22 +64,21 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
     },
-    "/analysis/ProcessingRequest":{
-      "post":{
-        "tags":[
+    "/analysis/ProcessingRequest": {
+      "post": {
+        "tags": [
           "analysis"
         ],
-        "summary":"Analyze a specific frame",
-        "description":"",
-        "operationId":"ImageAnalysis",
-        "parameters":
-        [
+        "summary": "Analyze a specific frame",
+        "description": "",
+        "operationId": "ProcessingRequest",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -107,7 +104,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -121,22 +118,21 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
     },
-    "/analysis/ImagesArray":{
-      "post":{
-        "tags":[
+    "/analysis/ImagesArray": {
+      "post": {
+        "tags": [
           "analysis"
         ],
-        "summary":"Analyze an array of images",
-        "description":"",
-        "operationId":"ImageArrayAnalysis",
-        "parameters":
-        [
+        "summary": "Analyze an array of images",
+        "description": "",
+        "operationId": "ImageArrayAnalysis",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -165,7 +161,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -179,22 +175,21 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
     },
-    "/analysis/Image":{
-      "post":{
-        "tags":[
+    "/analysis/Image": {
+      "post": {
+        "tags": [
           "analysis"
         ],
-        "summary":"Analyze a single image",
-        "description":"",
-        "operationId":"ImageAnalysis",
-        "parameters":
-        [
+        "summary": "Analyze a single image",
+        "description": "",
+        "operationId": "ImageAnalysis",
+        "parameters": [
           {
             "in": "query",
             "name": "streamId",
@@ -223,7 +218,7 @@
             }
           }
         },
-        "responses":{
+        "responses": {
           "200": {
             "description": "successful operation",
             "content": {
@@ -237,8 +232,8 @@
               }
             }
           },
-          "400":{
-            "description":"Invalid status value"
+          "400": {
+            "description": "Invalid status value"
           }
         }
       }
@@ -262,8 +257,7 @@
             "description": "Alpha-numeric, unique id of frame. You can use (timestamp+sourceId) or sha512(timestamp+sourceId)",
             "example": "7E43358680768EF053898993DD196397EDFDDFBC81751818B7FD1300124455B07E91CB289F87791D78064ECC93754F19B13D419489F162A150A22DD814CKAF0E"
           },
-          "frameCounter":
-          {
+          "frameCounter": {
             "type": "integer",
             "format": "int32",
             "description": "Per-source incremental frame counter",
@@ -285,16 +279,17 @@
               "type": "Event"
             }
           },
-          "timing":{
+          "timing": {
             "type": "object",
-            "additionalProperties":"true"
+            "additionalProperties": {
+              "type": "double"
+            }
           },
-          "debug":{
+          "debug": {
             "type": "object",
-            "additionalProperties":"true"
+            "additionalProperties": {
+            }
           }
-
-
         }
       },
       "Image": {
@@ -465,8 +460,6 @@
           }
         }
       },
-
-
       "SourceStatus": {
         "type": "object",
         "required": [
@@ -474,31 +467,25 @@
           "name"
         ],
         "properties": {
-
-
-          "ingestedFrame":
-          {
+          "ingestedFrame": {
             "type": "integer",
             "format": "int32",
             "description": "Number of frame which have been successfully captured.",
             "example": 86537
           },
-          "processedFrames":
-          {
+          "processedFrames": {
             "type": "integer",
             "format": "int32",
             "description": "Number of frame which have been successfully processed.",
             "example": 86537
           },
-          "ingestedErrorCount":
-          {
+          "ingestedErrorCount": {
             "type": "integer",
             "format": "int32",
             "description": "Number of errors, dropped or missed frames from acquisition",
             "example": 86537
           },
-          "processedErrorCount":
-          {
+          "processedErrorCount": {
             "type": "integer",
             "format": "int32",
             "description": "Number of errors, dropped or missed frames from processing",
@@ -506,8 +493,6 @@
           }
         }
       },
-
-
       "Source": {
         "type": "object",
         "required": [
@@ -589,7 +574,7 @@
           "metric": {
             "description": "The recommended type of metric used ",
             "type": "string",
-            "example":"euclidean",
+            "example": "euclidean",
             "description": "Euclidean tripartite loss function",
             "enum": [
               "euclidean",
@@ -668,18 +653,16 @@
               "type": "BoundingRectangle"
             }
           },
-          "parameters":
-          {
+          "parameters": {
             "type": "object",
-            "additionalProperties":"true"
+            "additionalProperties": "true"
           },
           "frameId": {
             "type": "string",
             "description": "Alpha-numeric, unique id of frame. You can use (timestamp+sourceId) or sha512(timestamp+sourceId)",
             "example": "7E43358680768EF053898993DD196397EDFDDFBC81751818B7FD1300124455B07E91CB289F87791D78064ECC93754F19B13D419489F162A150A22DD814CKAF0E"
           },
-          "frameCounter":
-          {
+          "frameCounter": {
             "type": "integer",
             "format": "int32",
             "description": "Per-source incremental frame counter",
@@ -805,7 +788,6 @@
             "$ref": "#/definitions/ObjectProfile",
             "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type."
           }
-
         }
       },
       "ObjectProfile": {
@@ -928,14 +910,13 @@
         }
       },
       "ObjectBucket": {
-        "description":"[TODO: Object definition] Unsorted and unassigned set of object occurences, which can server for clustering and later historical-matching.",
+        "description": "[TODO: Object definition] Unsorted and unassigned set of object occurences, which can server for clustering and later historical-matching.",
         "type": "object",
         "properties": {
           "id": {
             "description": "The ID of the bucket of object instances",
             "type": "string"
           }
-
         }
       },
       "Transcription": {
@@ -945,8 +926,7 @@
             "description": "The ID of the collection from which the match was made",
             "type": "string"
           },
-          "confidence":
-          {
+          "confidence": {
             "type": "number",
             "format": "double",
             "example": 0.83
@@ -964,8 +944,7 @@
             "description": "The context from which the tracking originated",
             "type": "string"
           },
-          "confidence":
-          {
+          "confidence": {
             "description": "The confidence that the object is tracked correctly and consistently.",
             "type": "number",
             "format": "double",
@@ -975,8 +954,8 @@
       }
     }
   },
-  "externalDocs":{
-    "description":"Find out more about DeepVISS",
-    "url":"https://deepviss.org"
+  "externalDocs": {
+    "description": "Deep vision interoperability specification standard (DeepVISS) reduces integration time, complexity and defects by using a standardized, language-agnostic, cross-platform schema",
+    "url": "https://deepviss.org"
   }
 }
