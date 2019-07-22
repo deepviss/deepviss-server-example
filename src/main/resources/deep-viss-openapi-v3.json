@@ -363,7 +363,15 @@
           "features": {
             "type": "Features",
             "$ref": "#/definitions/Features",
-            "description": "What are the features extracted from the detected object?"
+            "description": "[DEPRECATED] The main features of detectected object."
+          },
+          "featuresMap": {
+            "description": "What are the secondary features extracted from the detected object?",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Features",
+              "type": "Features"
+            }
           },
           "processedImage": {
             "type": "Image",
@@ -396,6 +404,14 @@
             "items": {
               "$ref": "#/definitions/Point2D",
               "type": "Point2D"
+            }
+          },
+          "segmentedKeypoints": {
+            "description": "What are the keypoints of the object??",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/KeypointsSegment",
+              "type": "KeypointsSegment"
             }
           },
           "confidence": {
@@ -560,6 +576,16 @@
           }
         }
       },
+      "Metric": {
+        "description": "The recommended type of metric used ",
+        "type": "string",
+        "example": "Euclidean tripartite loss function",
+        "enum": [
+          "euclidean",
+          "manhattan",
+          "cosine"
+        ]
+      },
       "Features": {
         "type": "object",
         "required": [
@@ -571,16 +597,15 @@
             "type": "string",
             "example": "Euclidean tripartite loss function"
           },
+          "privacy": {
+            "description": "The recommended type of metric used ",
+            "type": "PrivacyIndication",
+            "$ref": "#/definitions/PrivacyIndication"
+          },
           "metric": {
             "description": "The recommended type of metric used ",
-            "type": "string",
-            "example": "euclidean",
-            "description": "Euclidean tripartite loss function",
-            "enum": [
-              "euclidean",
-              "manhattan",
-              "cosine"
-            ]
+            "type": "Metric",
+            "$ref": "#/definitions/Metric"
           },
           "threshold": {
             "description": "The value of the metric threshold",
@@ -655,7 +680,9 @@
           },
           "parameters": {
             "type": "object",
-            "additionalProperties": "true"
+            "additionalProperties": {
+              "type": "string"
+            }
           },
           "frameId": {
             "type": "string",
@@ -769,13 +796,8 @@
           },
           "metric": {
             "description": "The metric used for comparing collection objects ",
-            "type": "string",
-            "example": "Euclidean tripartite loss function",
-            "enum": [
-              "euclidean",
-              "manhattan",
-              "cosine"
-            ]
+            "type": "Metric",
+            "$ref": "#/definitions/Metric"
           },
           "threshold": {
             "description": "The recommended metric value recommended to be used as threshold",
@@ -804,6 +826,13 @@
           "collectionId": {
             "description": "The ID of parent collection.",
             "type": "string"
+          },
+          "croppedImageURLs": {
+            "description": "The list of object instances statically assigned to the object profile.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "displayName": {
             "description": "The human-readable name of the profile",
@@ -893,6 +922,15 @@
             "description": "The match with an object",
             "type": "string"
           },
+          "algorithm": {
+            "description": "The name and version of the algorithm used for feature extraction",
+            "type": "string",
+            "example": "Euclidean tripartite loss function"
+          },
+          "metric": {
+            "description": "The ID of the collection from which the match was made",
+            "type": "string"
+          },
           "collectionId": {
             "description": "The ID of the collection from which the match was made",
             "type": "string"
@@ -949,6 +987,60 @@
             "type": "number",
             "format": "double",
             "example": 0.83
+          }
+        }
+      },
+      "PrivacyIndication": {
+        "type": "object",
+        "properties": {
+          "hasBiometricData": {
+            "description": "Does object contain biometric data?",
+            "type": "boolean"
+          },
+          "retentionAllowed": {
+            "description": "Is retention of the object allowed?",
+            "type": "boolean"
+          },
+          "scheduledEvictionTime": {
+            "type": "string",
+            "pattern": "/^(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(.[0-9]+)?(Z)?$/g",
+            "description": "Date and time expressed according to ISO 8601 (e.g. 2018-06-24T23:10:28+03:00) of when this data is expected to be collected."
+          }
+        }
+      },
+      "PackedPrefetch": {
+        "type": "object",
+        "properties": {
+
+          "profiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ObjectProfile",
+              "type": "ObjectProfile"
+            }
+          }
+        }
+      },
+      "PackedSight": {
+        "type": "object",
+        "properties": {
+          "frames": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Frame",
+              "type": "Frame"
+            }
+          },
+          "occurrences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/ObjectOccurrence",
+              "type": "ObjectOccurrence"
+            }
+          },
+          "prefetch": {
+            "type": "PackedPrefetch",
+            "$ref": "#/definitions/PackedPrefetch"
           }
         }
       }

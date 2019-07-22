@@ -165,7 +165,7 @@ public class FrameMocker {
 
                 event.setFeatures(new DeepVISSFeatures());
                 event.getFeatures().setAlgorithm("ArcFace-v1.2");
-                event.getFeatures().setMetric(DeepVISSFeatures.MetricEnum.EUCLIDEAN);
+                event.getFeatures().setMetric( DeepVISSMetric.EUCLIDEAN);
                 event.getFeatures().setThreshold(0.8);
                 event.getFeatures().setVector(new ArrayList<>());
                 for (int featureIndex = 0; featureIndex < maxFeatureIndex; featureIndex++) {
