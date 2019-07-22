@@ -58,7 +58,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Frame"
+                    "$ref": "#/components/schemas/Frame"
                   }
                 }
               }
@@ -112,7 +112,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Frame"
+                    "$ref": "#/components/schemas/Frame"
                   }
                 }
               }
@@ -169,7 +169,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Frame"
+                    "$ref": "#/components/schemas/Frame"
                   }
                 }
               }
@@ -226,7 +226,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/definitions/Frame"
+                    "$ref": "#/components/schemas/Frame"
                   }
                 }
               }
@@ -248,7 +248,7 @@
             "description": "Defines the several timestamps of acquisition, reception, pre-processing and post-processing respectively.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/FrameTimestamp",
+              "$ref": "#/components/schemas/FrameTimestamp",
               "type": "FrameTimestamp"
             }
           },
@@ -269,13 +269,13 @@
           },
           "image": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
+            "$ref": "#/components/schemas/Image",
             "description": "Image information"
           },
           "events": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Event",
+              "$ref": "#/components/schemas/Event",
               "type": "Event"
             }
           },
@@ -346,28 +346,28 @@
             "description": "What are the inferred attributes of the object?",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Attribute",
+              "$ref": "#/components/schemas/Attribute",
               "type": "Attribute"
             }
           },
           "tracking": {
             "type": "Tracking",
-            "$ref": "#/definitions/Tracking",
+            "$ref": "#/components/schemas/Tracking",
             "description": "Tracking id and tracking detection"
           },
           "detection": {
             "type": "Detection",
-            "$ref": "#/definitions/Detection",
+            "$ref": "#/components/schemas/Detection",
             "description": "Detection information"
           },
           "features": {
             "type": "Features",
-            "$ref": "#/definitions/Features",
+            "$ref": "#/components/schemas/Features",
             "description": "What are the features extracted from the detected object?"
           },
           "processedImage": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
+            "$ref": "#/components/schemas/Image",
             "description": "Any post-processing image returned for this event."
           }
         }
@@ -377,12 +377,12 @@
         "properties": {
           "boundingRectangle": {
             "type": "BoundingRectangle",
-            "$ref": "#/definitions/BoundingRectangle",
+            "$ref": "#/components/schemas/BoundingRectangle",
             "description": "Where in the frame has the object been detected?"
           },
           "orientation": {
             "type": "Orientation",
-            "$ref": "#/definitions/Orientation",
+            "$ref": "#/components/schemas/Orientation",
             "description": "What is the geometric orientation of the detected object or event?"
           },
           "algorithm": {
@@ -394,7 +394,7 @@
             "description": "What are the keypoints of the object??",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Point2D",
+              "$ref": "#/components/schemas/Point2D",
               "type": "Point2D"
             }
           },
@@ -463,8 +463,7 @@
       "SourceStatus": {
         "type": "object",
         "required": [
-          "id",
-          "name"
+
         ],
         "properties": {
           "ingestedFrame": {
@@ -563,7 +562,7 @@
       "Features": {
         "type": "object",
         "required": [
-          "features"
+          "vector"
         ],
         "properties": {
           "algorithm": {
@@ -575,7 +574,6 @@
             "description": "The recommended type of metric used ",
             "type": "string",
             "example": "euclidean",
-            "description": "Euclidean tripartite loss function",
             "enum": [
               "euclidean",
               "manhattan",
@@ -642,14 +640,14 @@
         "properties": {
           "image": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
+            "$ref": "#/components/schemas/Image",
             "description": "Image information"
           },
           "regionsOfInterest": {
             "description": "Define any regions of interest, defined by bounding boxes, where the processing should focus.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/BoundingRectangle",
+              "$ref": "#/components/schemas/BoundingRectangle",
               "type": "BoundingRectangle"
             }
           },
@@ -708,7 +706,7 @@
         "additionalProperties": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Point2D",
+            "$ref": "#/components/schemas/Point2D",
             "type": "Point2D"
           }
         }
@@ -785,7 +783,7 @@
           },
           "profiles": {
             "type": "ObjectProfile",
-            "$ref": "#/definitions/ObjectProfile",
+            "$ref": "#/components/schemas/ObjectProfile",
             "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type."
           }
         }
@@ -813,7 +811,7 @@
             "description": "The list of object instances statically assigned to the object profile.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectInstance",
+              "$ref": "#/components/schemas/ObjectInstance",
               "type": "ObjectInstance"
             }
           },
@@ -827,7 +825,7 @@
             "description": "The list of object instances dynamically assigned to the object profile.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectOccurrence",
+              "$ref": "#/components/schemas/ObjectOccurrence",
               "type": "ObjectOccurrence"
             }
           }
@@ -846,12 +844,12 @@
           },
           "image": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
+            "$ref": "#/components/schemas/Image",
             "description": "Original image information associated with the ObjectInstance"
           },
           "features": {
             "type": "Features",
-            "$ref": "#/definitions/Features",
+            "$ref": "#/components/schemas/Features",
             "description": "What are the features extracted from the detected object?"
           }
         }
@@ -865,7 +863,7 @@
           },
           "timestamp": {
             "type": "FrameTimestamp",
-            "$ref": "#/definitions/FrameTimestamp",
+            "$ref": "#/components/schemas/FrameTimestamp",
             "description": "The timestamp of the frame from which match originated."
           },
           "eventId": {
@@ -880,7 +878,7 @@
             "description": "The list of profile that object matched as compared to a list of collections, at a specific time",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectMatch",
+              "$ref": "#/components/schemas/ObjectMatch",
               "type": "ObjectMatch"
             }
           }
