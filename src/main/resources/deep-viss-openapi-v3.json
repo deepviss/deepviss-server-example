@@ -735,7 +735,7 @@
         "type": "object",
         "properties": {
           "keypoints" : {
-            "description" : "Bug keypoints fix! #vladv",
+            "description" : "Collection of key-points, grouped in a map with keys representing names and values represented by a value of points.",
             "type": "array",
             "items": {
               "$ref": "#/definitions/Point2D",
