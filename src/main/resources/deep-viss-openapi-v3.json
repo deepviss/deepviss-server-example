@@ -58,7 +58,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Frame"
+                    "$ref": "#/definitions/Frame"
                   }
                 }
               }
@@ -112,7 +112,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Frame"
+                    "$ref": "#/definitions/Frame"
                   }
                 }
               }
@@ -169,7 +169,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Frame"
+                    "$ref": "#/definitions/Frame"
                   }
                 }
               }
@@ -226,7 +226,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Frame"
+                    "$ref": "#/definitions/Frame"
                   }
                 }
               }
@@ -248,7 +248,7 @@
             "description": "Defines the several timestamps of acquisition, reception, pre-processing and post-processing respectively.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FrameTimestamp",
+              "$ref": "#/definitions/FrameTimestamp",
               "type": "FrameTimestamp"
             }
           },
@@ -269,13 +269,13 @@
           },
           "image": {
             "type": "Image",
-            "$ref": "#/components/schemas/Image",
+            "$ref": "#/definitions/Image",
             "description": "Image information"
           },
           "events": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Event",
+              "$ref": "#/definitions/Event",
               "type": "Event"
             }
           },
@@ -288,6 +288,7 @@
           "debug": {
             "type": "object",
             "additionalProperties": {
+              "type": "string"
             }
           }
         }
@@ -346,36 +347,36 @@
             "description": "What are the inferred attributes of the object?",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Attribute",
+              "$ref": "#/definitions/Attribute",
               "type": "Attribute"
             }
           },
           "tracking": {
             "type": "Tracking",
-            "$ref": "#/components/schemas/Tracking",
+            "$ref": "#/definitions/Tracking",
             "description": "Tracking id and tracking detection"
           },
           "detection": {
             "type": "Detection",
-            "$ref": "#/components/schemas/Detection",
+            "$ref": "#/definitions/Detection",
             "description": "Detection information"
           },
           "features": {
             "type": "Features",
-            "$ref": "#/components/schemas/Features",
+            "$ref": "#/definitions/Features",
             "description": "[DEPRECATED] The main features of detectected object."
           },
           "featuresMap": {
             "description": "What are the secondary features extracted from the detected object?",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Features",
+              "$ref": "#/definitions/Features",
               "type": "Features"
             }
           },
           "processedImage": {
             "type": "Image",
-            "$ref": "#/components/schemas/Image",
+            "$ref": "#/definitions/Image",
             "description": "Any post-processing image returned for this event."
           }
         }
@@ -385,12 +386,12 @@
         "properties": {
           "boundingRectangle": {
             "type": "BoundingRectangle",
-            "$ref": "#/components/schemas/BoundingRectangle",
+            "$ref": "#/definitions/BoundingRectangle",
             "description": "Where in the frame has the object been detected?"
           },
           "orientation": {
             "type": "Orientation",
-            "$ref": "#/components/schemas/Orientation",
+            "$ref": "#/definitions/Orientation",
             "description": "What is the geometric orientation of the detected object or event?"
           },
           "algorithm": {
@@ -402,7 +403,7 @@
             "description": "What are the keypoints of the object??",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Point2D",
+              "$ref": "#/definitions/Point2D",
               "type": "Point2D"
             }
           },
@@ -410,7 +411,7 @@
             "description": "What are the keypoints of the object??",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/KeypointsSegment",
+              "$ref": "#/definitions/KeypointsSegment",
               "type": "KeypointsSegment"
             }
           },
@@ -600,12 +601,12 @@
           "privacy": {
             "description": "The recommended type of metric used ",
             "type": "PrivacyIndication",
-            "$ref": "#/components/schemas/PrivacyIndication"
+            "$ref": "#/definitions/PrivacyIndication"
           },
           "metric": {
             "description": "The recommended type of metric used ",
             "type": "Metric",
-            "$ref": "#/components/schemas/Metric"
+            "$ref": "#/definitions/Metric"
           },
           "threshold": {
             "description": "The value of the metric threshold",
@@ -667,14 +668,14 @@
         "properties": {
           "image": {
             "type": "Image",
-            "$ref": "#/components/schemas/Image",
+            "$ref": "#/definitions/Image",
             "description": "Image information"
           },
           "regionsOfInterest": {
             "description": "Define any regions of interest, defined by bounding boxes, where the processing should focus.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/BoundingRectangle",
+              "$ref": "#/definitions/BoundingRectangle",
               "type": "BoundingRectangle"
             }
           },
@@ -732,11 +733,14 @@
       },
       "KeypointsSegment": {
         "type": "object",
-        "additionalProperties": {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/Point2D",
-            "type": "Point2D"
+        "properties": {
+          "keypoints" : {
+            "description" : "Bug keypoints fix! #vladv",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Point2D",
+              "type": "Point2D"
+            }
           }
         }
       },
@@ -797,7 +801,7 @@
           "metric": {
             "description": "The metric used for comparing collection objects ",
             "type": "Metric",
-            "$ref": "#/components/schemas/Metric"
+            "$ref": "#/definitions/Metric"
           },
           "threshold": {
             "description": "The recommended metric value recommended to be used as threshold",
@@ -807,7 +811,7 @@
           },
           "profiles": {
             "type": "ObjectProfile",
-            "$ref": "#/components/schemas/ObjectProfile",
+            "$ref": "#/definitions/ObjectProfile",
             "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type."
           }
         }
@@ -827,7 +831,7 @@
             "description": "The ID of parent collection.",
             "type": "string"
           },
-          "croppedImageURLs": {
+          "avatars": {
             "description": "The list of object instances statically assigned to the object profile.",
             "type": "array",
             "items": {
@@ -842,7 +846,7 @@
             "description": "The list of object instances statically assigned to the object profile.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectInstance",
+              "$ref": "#/definitions/ObjectInstance",
               "type": "ObjectInstance"
             }
           },
@@ -856,7 +860,7 @@
             "description": "The list of object instances dynamically assigned to the object profile.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectOccurrence",
+              "$ref": "#/definitions/ObjectOccurrence",
               "type": "ObjectOccurrence"
             }
           }
@@ -875,12 +879,12 @@
           },
           "image": {
             "type": "Image",
-            "$ref": "#/components/schemas/Image",
+            "$ref": "#/definitions/Image",
             "description": "Original image information associated with the ObjectInstance"
           },
           "features": {
             "type": "Features",
-            "$ref": "#/components/schemas/Features",
+            "$ref": "#/definitions/Features",
             "description": "What are the features extracted from the detected object?"
           }
         }
@@ -894,7 +898,7 @@
           },
           "timestamp": {
             "type": "FrameTimestamp",
-            "$ref": "#/components/schemas/FrameTimestamp",
+            "$ref": "#/definitions/FrameTimestamp",
             "description": "The timestamp of the frame from which match originated."
           },
           "eventId": {
@@ -909,7 +913,7 @@
             "description": "The list of profile that object matched as compared to a list of collections, at a specific time",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectMatch",
+              "$ref": "#/definitions/ObjectMatch",
               "type": "ObjectMatch"
             }
           }
@@ -1015,7 +1019,7 @@
           "profiles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectProfile",
+              "$ref": "#/definitions/ObjectProfile",
               "type": "ObjectProfile"
             }
           }
@@ -1027,20 +1031,20 @@
           "frames": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Frame",
+              "$ref": "#/definitions/Frame",
               "type": "Frame"
             }
           },
           "occurrences": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ObjectOccurrence",
+              "$ref": "#/definitions/ObjectOccurrence",
               "type": "ObjectOccurrence"
             }
           },
           "prefetch": {
             "type": "PackedPrefetch",
-            "$ref": "#/components/schemas/PackedPrefetch"
+            "$ref": "#/definitions/PackedPrefetch"
           }
         }
       }
