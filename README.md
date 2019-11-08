@@ -1,3 +1,5 @@
+# This DeepVISS official repository has moved to [https://github.com/deepviss-org]
+
 # DeepVISS
 # Deep Vision Interoperability Specification Standard
 
