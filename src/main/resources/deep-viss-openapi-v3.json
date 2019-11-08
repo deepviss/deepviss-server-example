@@ -248,7 +248,6 @@
             "description": "Defines the several timestamps of acquisition, reception, pre-processing and post-processing respectively.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/FrameTimestamp",
               "type": "FrameTimestamp"
             }
           },
@@ -269,13 +268,11 @@
           },
           "image": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
             "description": "Image information"
           },
           "events": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Event",
               "type": "Event"
             }
           },
@@ -347,36 +344,30 @@
             "description": "What are the inferred attributes of the object?",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Attribute",
               "type": "Attribute"
             }
           },
           "tracking": {
             "type": "Tracking",
-            "$ref": "#/definitions/Tracking",
             "description": "Tracking id and tracking detection"
           },
           "detection": {
             "type": "Detection",
-            "$ref": "#/definitions/Detection",
             "description": "Detection information"
           },
           "features": {
             "type": "Features",
-            "$ref": "#/definitions/Features",
             "description": "[DEPRECATED] The main features of detectected object."
           },
           "featuresMap": {
             "description": "What are the secondary features extracted from the detected object?",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Features",
               "type": "Features"
             }
           },
           "processedImage": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
             "description": "Any post-processing image returned for this event."
           }
         }
@@ -386,12 +377,10 @@
         "properties": {
           "boundingRectangle": {
             "type": "BoundingRectangle",
-            "$ref": "#/definitions/BoundingRectangle",
             "description": "Where in the frame has the object been detected?"
           },
           "orientation": {
             "type": "Orientation",
-            "$ref": "#/definitions/Orientation",
             "description": "What is the geometric orientation of the detected object or event?"
           },
           "algorithm": {
@@ -403,7 +392,6 @@
             "description": "What are the keypoints of the object??",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Point2D",
               "type": "Point2D"
             }
           },
@@ -411,7 +399,6 @@
             "description": "What are the keypoints of the object??",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/KeypointsSegment",
               "type": "KeypointsSegment"
             }
           },
@@ -600,13 +587,11 @@
           },
           "privacy": {
             "description": "The recommended type of metric used ",
-            "type": "PrivacyIndication",
-            "$ref": "#/definitions/PrivacyIndication"
+            "type": "PrivacyIndication"
           },
           "metric": {
             "description": "The recommended type of metric used ",
-            "type": "Metric",
-            "$ref": "#/definitions/Metric"
+            "type": "Metric"
           },
           "threshold": {
             "description": "The value of the metric threshold",
@@ -656,9 +641,10 @@
             "description": "The type of the attribute, to be used in higher order processing and logic.",
             "type": "string",
             "enum": [
-              "string",
+              "lexicographic",
               "hex-color",
-              "integer"
+              "integer",
+              "double"
             ]
           }
         }
@@ -668,14 +654,12 @@
         "properties": {
           "image": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
             "description": "Image information"
           },
           "regionsOfInterest": {
             "description": "Define any regions of interest, defined by bounding boxes, where the processing should focus.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/BoundingRectangle",
               "type": "BoundingRectangle"
             }
           },
@@ -738,7 +722,6 @@
             "description" : "Collection of key-points, grouped in a map with keys representing names and values represented by a value of points.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Point2D",
               "type": "Point2D"
             }
           }
@@ -800,8 +783,7 @@
           },
           "metric": {
             "description": "The metric used for comparing collection objects ",
-            "type": "Metric",
-            "$ref": "#/definitions/Metric"
+            "type": "Metric"
           },
           "threshold": {
             "description": "The recommended metric value recommended to be used as threshold",
@@ -811,7 +793,6 @@
           },
           "profiles": {
             "type": "ObjectProfile",
-            "$ref": "#/definitions/ObjectProfile",
             "description": "List of ObjectProfiles. All profiles must be of the same type as the collection object type."
           }
         }
@@ -846,7 +827,6 @@
             "description": "The list of object instances statically assigned to the object profile.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectInstance",
               "type": "ObjectInstance"
             }
           },
@@ -860,7 +840,6 @@
             "description": "The list of object instances dynamically assigned to the object profile.",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectOccurrence",
               "type": "ObjectOccurrence"
             }
           }
@@ -879,12 +858,10 @@
           },
           "image": {
             "type": "Image",
-            "$ref": "#/definitions/Image",
             "description": "Original image information associated with the ObjectInstance"
           },
           "features": {
             "type": "Features",
-            "$ref": "#/definitions/Features",
             "description": "What are the features extracted from the detected object?"
           }
         }
@@ -898,7 +875,6 @@
           },
           "timestamp": {
             "type": "FrameTimestamp",
-            "$ref": "#/definitions/FrameTimestamp",
             "description": "The timestamp of the frame from which match originated."
           },
           "eventId": {
@@ -913,7 +889,6 @@
             "description": "The list of profile that object matched as compared to a list of collections, at a specific time",
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectMatch",
               "type": "ObjectMatch"
             }
           }
@@ -1015,11 +990,9 @@
       "PackedPrefetch": {
         "type": "object",
         "properties": {
-
           "profiles": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectProfile",
               "type": "ObjectProfile"
             }
           }
@@ -1031,20 +1004,17 @@
           "frames": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/Frame",
               "type": "Frame"
             }
           },
           "occurrences": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/ObjectOccurrence",
               "type": "ObjectOccurrence"
             }
           },
           "prefetch": {
-            "type": "PackedPrefetch",
-            "$ref": "#/definitions/PackedPrefetch"
+            "type": "PackedPrefetch"
           }
         }
       }
